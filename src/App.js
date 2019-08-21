@@ -1,26 +1,54 @@
 import React from 'react';
-import logo from './logo.svg';
+import { BrowserRouter } from 'react-router-dom';
 import './App.css';
+import Menu from './components/Menu/Menu';
+import Navbar from './components/Navbar/Navbar';
+import Contenido from './components/Contenido/Contenido';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  constructor() {
+
+    super();
+
+    this.state = {
+      estado: "inactive"
+    }
+    this.cambiarEstado = this.cambiarEstado.bind(this);
+  }
+  cambiarEstado() {
+    if (this.state.estado === "inactive") {
+      this.setState({
+        estado: "active"
+      })
+    } else {
+      this.setState({
+        estado: "inactive"
+      })
+    }
+  }
+
+
+  render() {
+
+    return (
+
+      <BrowserRouter>
+        <div className="App">
+
+          <div id="app">
+            <Menu estado={this.state.estado} />
+            <div id="principal">
+              <Navbar metodo={this.cambiarEstado} />
+              <Contenido />
+            </div>
+          </div>
+
+        </div>
+      </BrowserRouter>
+    );
+
+  }
+
 }
 
 export default App;
