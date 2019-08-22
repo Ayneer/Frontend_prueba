@@ -14,6 +14,11 @@ class Navbar extends React.Component {
                         <span>Menu</span>
                     </button>
 
+                    <button type="button" className="btn btn-info" onClick={this.props.cerrarSesion} >
+                        <i className="fas fa-align-left"></i>
+                        <span>Cerrar Sesion</span>
+                    </button>
+
                 </div>
             </nav>
         )

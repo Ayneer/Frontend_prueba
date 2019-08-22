@@ -8,11 +8,11 @@ class Menu extends React.Component {
         return (
             <nav id="sidebar" className={this.props.estado}>
                 <div className="sidebar-header">
-                    <h3>Bootstrap Sidebar</h3>
+                    <h3>Energía App</h3>
                 </div>
 
                 <ul className="list-unstyled components">
-                    <p>Dummy Heading</p>
+                    <p>¡Gestiona tu energía!</p>
 
                     <li className="active">
                         <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Home</a>
@@ -55,6 +55,7 @@ class Menu extends React.Component {
                     </li>
                 </ul>
             </nav>
+            
         )
     }
 }
