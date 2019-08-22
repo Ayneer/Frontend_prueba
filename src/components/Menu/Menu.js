@@ -31,7 +31,7 @@ class Menu extends React.Component {
                     </li>
 
                     <li>
-                        <Link to='/consumo'>Consumo</Link>
+                        <Link to='/app/consumo'>Mi consumo</Link>
                     </li>
                     <li>
                         <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Pages</a>
@@ -48,10 +48,10 @@ class Menu extends React.Component {
                         </ul>
                     </li>
                     <li>
-                        <Link to='/historial'>Historial</Link>
+                        <Link to='/app/historial'>Mi historial</Link>
                     </li>
                     <li>
-                        <a href=" ">Contacts</a>
+                        <Link to='/app/ajustes'>Ajustes</Link>
                     </li>
                 </ul>
             </nav>

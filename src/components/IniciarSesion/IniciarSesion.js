@@ -1,5 +1,6 @@
 import React from 'react';
 import './iniciarSesion.css';
+import Navbar from '../Navbar/Navbar';
 
 class IniciarSesion extends React.Component {
 
@@ -53,33 +54,36 @@ class IniciarSesion extends React.Component {
     }
 
     render() {
-        return (
-            <div className="card iniciarSesion " >
-                <div className="card-body">
-                    <h5 className="card-title">
-                    Iniciar Sesion
-                    </h5>
-                    <div className="alert alert-danger alert-dismissible fade show" role="alert" style={{display: "none"}}>
-                    <strong>{this.state.mensaje}f</strong>
-                    <button type="button" className="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
 
-                <form>
-                    <div className="form-group">
-                        <input type="email" className="form-control" ria-describedby="emailHelp" placeholder="Ingrese su correo" name="correo" value={this.state.correo} onChange={this.capturarInput} required />
+        return (
+            <div>
+                <Navbar soyYo = 'inicioSesion' />
+                <div className="card iniciarSesion " >
+                    <div className="card-body">
+                        <h5 className="card-title">
+                            Iniciar Sesion
+                    </h5>
+                        <div className="alert alert-danger alert-dismissible fade show" role="alert" style={{ display: "none" }}>
+                            <strong>{this.state.mensaje}f</strong>
+                            <button type="button" className="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                        <form>
+                            <div className="form-group">
+                                <input type="email" className="form-control" ria-describedby="emailHelp" placeholder="Ingrese su correo" name="correo" value={this.state.correo} onChange={this.capturarInput} required />
+                            </div>
+
+                            <div className="form-group ">
+                                <input type="password" className="form-control" placeholder="Ingrese su contraseña" name="contraseña" value={this.state.contraseña} onChange={this.capturarInput} required /></div>
+
+                            <button className="btn btn-primary" onClick={this.iniciarSesion}>Iniciar sesion</button>
+
+                        </form>
                     </div>
 
-                    <div className="form-group ">
-                        <input type="password" className="form-control" placeholder="Ingrese su contraseña" name="contraseña" value={this.state.contraseña} onChange={this.capturarInput} required /></div>
-                        
-                        <button className="btn btn-primary" onClick={this.iniciarSesion}>Iniciar sesion</button>
-                    
-                </form>
                 </div>
-                
-
             </div>
         )
     }
