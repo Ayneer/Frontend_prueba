@@ -60,6 +60,7 @@ class App extends React.Component {
             <div id="principal">
 
               <Navbar metodo={this.cambiarEstado} cerrarSesion={this.cerrarSesion} />
+              
               <Contenido />
 
             </div>

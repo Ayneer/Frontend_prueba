@@ -7,13 +7,18 @@ class Menu extends React.Component {
     render() {
         return (
             <nav id="sidebar" className={this.props.estado}>
+
+                {/* Titulo principal del menú */}
                 <div className="sidebar-header">
                     <h3>Energía App</h3>
                 </div>
 
                 <ul className="list-unstyled components">
+
+                    {/* Subtitulo del menú */}
                     <p>¡Gestiona tu energía!</p>
 
+                    {/* Items del menú */}
                     <li className="active">
                         <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Home</a>
 
@@ -54,6 +59,7 @@ class Menu extends React.Component {
                         <Link to='/app/ajustes'>Ajustes</Link>
                     </li>
                 </ul>
+                
             </nav>
             
         )
