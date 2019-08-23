@@ -1,4 +1,39 @@
+@import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+
 .iniciarSesion{
-    margin-left: 20px;
-    margin-right: 20px;
+    margin-top: 70px;
+    margin-left: 400px;
+    margin-right: 400px;
+    
 }
+
+.card-title{
+    font-size: 30px;
+    font-family: 'Poppins', sans-serif;
+    border: none;
+    width: 275px;
+    color: rgb(60,173,228);
+   margin-bottom: 80px;
+}
+
+#cuadroForm{
+    width:400px;
+    height: 300px;
+    font-family: 'Poppins', sans-serif;
+    padding: 40px 30px;
+    text-align: center;
+}
+
+#btnIngresar{
+    margin-top: 15px;
+    margin-left: 285px;
+    background-color:rgb(60,173,228);
+    border:solid rgb(60,173,228);
+    
+}
+
+.campo{
+    width:300px;
+    margin-left: 40px;
+}
+
