@@ -3,33 +3,31 @@
 .iniciarSesion{
     margin-top: 70px;
     margin-left: 400px;
-    margin-right: 400px;
-    
+    margin-right: 400px;  
 }
 
-.card-title{
+.card-title{    
+    color: rgb(60,173,228);
+    width: 275px;
+    margin-top:60px;
     font-size: 30px;
     font-family: 'Poppins', sans-serif;
-    border: none;
-    width: 275px;
-    color: rgb(60,173,228);
-   margin-bottom: 80px;
+    text-decoration: underline;
 }
 
 #cuadroForm{
     width:400px;
-    height: 300px;
-    font-family: 'Poppins', sans-serif;
-    padding: 40px 30px;
+    height: 340px;
+    padding: 0px 30px 80px 30px;
     text-align: center;
+    font-family: 'Poppins', sans-serif;
 }
 
 #btnIngresar{
-    margin-top: 15px;
-    margin-left: 285px;
     background-color:rgb(60,173,228);
-    border:solid rgb(60,173,228);
-    
+    border:solid 1px rgb(60,173,228);  
+    margin-top: 15px;
+    margin-left: 285px;   
 }
 
 .campo{
@@ -37,3 +35,6 @@
     margin-left: 40px;
 }
 
+#campo1{
+    margin-top: 30px;
+}

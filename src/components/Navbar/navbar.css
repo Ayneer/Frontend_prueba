@@ -1,67 +1,57 @@
 /*ESTILOS PARA NAVBAR PRINCIPAL*/
-#contenedorPrincipal{
-    width: 100%;
-    height: 80px;
-    border: none;
-    margin: 0;
-    background: rgba(60,173,228, 0.8);
-}
-#sidebarCollapse{
-    background: rgb(60,173,228);
-    border: rgb(60,173,228);
-    font-family: 'Poppins', sans-serif;
-    display: block;
-    margin-left: 2px;
+#barraPrin{
+    background-color: rgba(60,173,228,1) !important;
+    height: 70px;
 }
 
-#cerrar{
-    background: rgb(60,173,228);
-    border: rgb(60,173,228);
-    font-family: 'Poppins', sans-serif;
-    display: block;
-    margin-left: 150px;
+#sidebarCollapse{/*Boton de menu*/
+    background-image: url(../Images/Btnmenu.png);
+    background-repeat: no-repeat;
+    background-color: rgba(60,173,228,0.7);
+    border: rgba(60,173,228,0.9);/*Quitar color*/
+    width: 35px;
+    height: 35px;
 }
+
+#msj{/*Boton de notificaciones*/
+    background-image: url(../Images/BtnNotificacion.png);
+    background-repeat: no-repeat;
+    background-color: rgba(60,173,228,0.7);
+    border: rgba(60,173,228,0.9);/*Quitar color*/
+    margin-left: 850px;
+    width: 35px;
+    height: 35px;
+}
+
+#cerrar{/*Boton de cerrar sesion*/
+    background-image: url(../Images/BtnLogout.png);
+    background-repeat: no-repeat;
+    background-color: rgba(60,173,228,0.7);
+    border: rgba(60,173,228,0.9);/*Quitar color*/
+    margin-left: 0px;
+    width: 35px;
+    height: 35px;
+}
+
 /*ESTILOS PARA NAVBAR INICIO DE SESION*/
 #barra{
-    background: rgb(60,173,228);
-    color: rgb(60,173,228);
+    background-color: rgb(60,173,228) !important;
+    height: 70px;
 }
 
-#ayuda{
-    background-image: url("../Images/BtnAyuda.png");
-    background-repeat: no-repeat;
-    width: 32px;
-    height: 32px;
+#ayuda{/*Boton de ayuda*/
     background-color: rgba(60,173,228, 0.7);
-    border: rgba(60,173,228, 0.7);
-            
+    border: rgba(60,173,228, 1);   
+    background-image: url("../Images/BtnAyuda.png");
+    background-repeat: no-repeat; 
+    width: 35px;
+    height: 35px;  
+    margin-right: 80px;       
 }
 
-#contenedorSesion{
-    height: 80px;
-    border: none;
-    background: rgba(60,173,228, 1);
-}
-
-#titulo{
-    font-family: 'Poppins', sans-serif;
-    font-size: 35px;
+#titulo{/*Nombre app*/
     color: azure;
     margin-left:500px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 35px;    
 }
-
-/*
-.navbar {
-    padding: 15px 10px;
-    background: rgba(60,173,228, 0.6);
-    border: none;
-    border-radius: 0;
-    margin-bottom: 40px;
-    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
-}
-.navbar-btn {
-    box-shadow: none;
-    outline: none !important;
-    border: none;
-}*/
-

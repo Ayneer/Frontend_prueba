@@ -57,7 +57,9 @@ class IniciarSesion extends React.Component {
     render() {
 
         return (
+
             <div>
+
                 <Navbar soyYo='inicioSesion' />
                 <div className="card iniciarSesion " >
                     <div id="cuadroForm" className="card-body">
@@ -68,20 +70,21 @@ class IniciarSesion extends React.Component {
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-
                         <form>
                             <div className="form-group">
-                                <input type="email" className="campo form-control" ria-describedby="emailHelp" placeholder="Ingrese su correo" name="correo" value={this.state.correo} onChange={this.capturarInput} required />
+                                <input id="campo1" type="email" className="campo form-control" ria-describedby="emailHelp" placeholder="Ingrese su correo" name="correo" value={this.state.correo} onChange={this.capturarInput} required />
                             </div>
-
                             <div className="form-group ">
                                 <input type="password" className="campo form-control" placeholder="Ingrese su contraseña" name="contraseña" value={this.state.contraseña} onChange={this.capturarInput} required />
                             </div>
                             <button id="btnIngresar" className="btn btn-primary" onClick={this.iniciarSesion}>Ingresar</button>
+
                         </form>
                     </div>
                 </div>
+
                 <Footer />
+
             </div>
         )
     }

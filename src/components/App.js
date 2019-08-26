@@ -4,6 +4,7 @@ import './App.css';
 import Menu from './Menu/Menu';
 import Navbar from './Navbar/Navbar';
 import Contenido from './Contenido/Contenido';
+import Footer from './Footer/Footer';
 
 class App extends React.Component {
 
@@ -31,10 +32,11 @@ class App extends React.Component {
     }
   }
 
-  redirreccionar(res) {
+  redireccionar(res) {
     // Se redirecciona al login 
     if (res.OK) {
       this.props.history.push('/');
+      console.log("se cerro");
     }
   }
 
@@ -43,7 +45,7 @@ class App extends React.Component {
       .then(function (response) {
         return response.json();
       })
-      .then(res => this.redirreccionar(res));
+      .then(res => this.redireccionar(res));
   }
 
   render() {
@@ -60,13 +62,16 @@ class App extends React.Component {
             <div id="principal">
 
               <Navbar metodo={this.cambiarEstado} cerrarSesion={this.cerrarSesion} />
+
               <Contenido />
 
             </div>
 
           </div>
+          <Footer />
 
         </div>
+
       </BrowserRouter>
     );
 
