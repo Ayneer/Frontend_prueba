@@ -1,13 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './navbar.css';
-import { Switch, Route } from 'react-router-dom';
+/*import { Switch, Route } from 'react-router-dom';*/
 
 class Navbar extends React.Component {
 
     render() {
         if (this.props.soyYo === 'inicioSesion') {
-            console.log(Math.random().toString(36).slice(-8));
             return (
                 <div>
                     <nav id="barra" className="navbar navbar-expand-lg navbar-light bg-light">
@@ -36,11 +35,11 @@ class Navbar extends React.Component {
 
                             </button>
                         </Link>
-                        
-                            <button id="cerrar" type="button" className="btn btn-info" onClick={this.props.cerrarSesion} >
-                                <i className="fas fa-align-left"></i>
-                            </button>
-                        
+
+                        <button id="cerrar" type="button" className="btn btn-info" onClick={this.props.cerrarSesion} >
+                            <i className="fas fa-align-left"></i>
+                        </button>
+
                     </div>
                 </nav>
 

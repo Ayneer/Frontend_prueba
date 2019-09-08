@@ -2,13 +2,14 @@
 #barraPrin{
     background-color: rgba(60,173,228,1) !important;
     height: 70px;
+   
 }
 
 #sidebarCollapse{/*Boton de menu*/
     background-image: url(../Images/Btnmenu.png);
     background-repeat: no-repeat;
     background-color: rgba(60,173,228,0.7);
-    border: rgba(60,173,228,0.9);/*Quitar color*/
+    border: none;/*Quitar color*/
     width: 35px;
     height: 35px;
 }
@@ -17,7 +18,7 @@
     background-image: url(../Images/BtnNotificacion.png);
     background-repeat: no-repeat;
     background-color: rgba(60,173,228,0.7);
-    border: rgba(60,173,228,0.9);/*Quitar color*/
+    border: none;/*Quitar color*/
     margin-left: 850px;
     width: 35px;
     height: 35px;
@@ -37,6 +38,10 @@
 #barra{
     background-color: rgb(60,173,228) !important;
     height: 70px;
+    width: 100%;
+    -webkit-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.5);
+    -moz-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.5);
+    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.5);
 }
 
 #ayuda{/*Boton de ayuda*/
@@ -55,3 +60,4 @@
     font-family: 'Poppins', sans-serif;
     font-size: 35px;    
 }
+

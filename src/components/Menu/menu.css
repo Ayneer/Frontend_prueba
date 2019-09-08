@@ -1,72 +1,89 @@
 @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
 /*ESTILOS PARA MENU DE CLIENTE*/
+
+#consumo:hover, #historial:hover, #limite:hover, #reporte:hover, #ajustes:hover{
+    background-color:azure;
+    color: rgb(60,173,228);
+}
+
 #consumo{
    background-image: url(../Images/BtnConsumo.png);
    background-repeat: no-repeat;
    background-color: rgb(60,173,228);
-   height: 30px;
-   width: 30px;
-   margin-top:8px;
-   margin-left: 5px;
-   border:none;  
-   display: inline-block;
-   float: left;
+   height: 35px;
+   width: 250px;
+   margin-top:0px;
+   margin-left: 0px;
+   margin-right: 0px;
+   font-family: 'Poppins', sans-serif;
+   border:none;
+   outline: none;
+   color: azure;   
 }
 
 #historial{
    background-image: url(../Images/BtnHistorial.png);
    background-repeat: no-repeat;
-   background-color: rgba(60,173,228,0.7);
-   height: 30px;
-   width: 30px;
-   margin-top:8px;
-   margin-left: 5px;
-   border:none;  
-   display: inline-block;
-   float: left;
+   background-color: rgb(60,173,228);
+   height: 35px;
+   width: 250px;
+   margin-top:0px;
+   margin-left: 0px;
+   margin-right: 0px;
+   font-family: 'Poppins', sans-serif;
+   border:none;
+   outline: none;
+   color: azure;  
 }
 
 #limite{
-    background-image: url(../Images/BtnLimite.png);
-   background-repeat: no-repeat;
-   background-color: rgb(60,173,228);
-   height: 30px;
-   width: 30px;
-   margin-top:8px;
-   margin-left: 5px;
-   border:none;  
-   display: inline-block;
-   float: left; 
+background-image: url(../Images/BtnLimite.png);
+background-repeat: no-repeat;
+background-color: rgb(60,173,228);
+height: 35px;
+width: 250px;
+margin-top:0px;
+margin-left: 0px;
+margin-right: 0px;
+font-family: 'Poppins', sans-serif;
+border:none;
+outline: none;
+color: azure; 
 }
 
 #reporte{
-    background-image: url(../Images/BtnReporte.png);
-    background-repeat: no-repeat;
-    background-color: rgba(60,173,228,0.7);
-    height: 30px;
-    width: 30px;
-    margin-top:8px;
-    margin-left: 5px;
-    border:none;  
-    display: inline-block;
-    float: left;
+background-image: url(../Images/BtnReporte.png);
+background-repeat: no-repeat;
+background-color: rgb(60,173,228);
+height: 35px;
+width: 250px;
+margin-top:0px;
+margin-left: 0px;
+margin-right: 0px;
+font-family: 'Poppins', sans-serif;
+border:none;
+outline: none;
+color: azure; 
 }
 
 #ajustes{
    background-image: url(../Images/BtnAjustes.png);
    background-repeat: no-repeat;
    background-color: rgb(60,173,228);
-   height: 30px;
-   width: 30px;
-   margin-top:8px;
-   margin-left: 5px;
-   border:none;  
-   display: inline-block;
-   float: left; 
+   height: 35px;
+   width: 250px;
+   margin-top:0px;
+   margin-left: 0px;
+   margin-right: 0px;
+   font-family: 'Poppins', sans-serif;
+   border:none;
+   outline: none;
+   color: azure;  
 }
 
 .impar{/*Da color a items impares*/
     background-color: rgb(60,173,228);
+    padding: 0;/*AHORA*/
 }
 
 .par{/*Da color a items pares*/
@@ -109,10 +126,10 @@ a, a:hover, a:focus {
     text-decoration: none;
 }
 
-#sidebar ul li a:hover {
+/*#sidebar ul li a:hover {
     background: rgba(251, 253, 255, 0.8);
     color:rgb(60,173,228);
-}
+}AHORA*/
 
 #sidebar ul li > a, a[aria-expanded="true"] {
     color: #fff;
@@ -129,6 +146,9 @@ ul > ul > a {
 }
 
 #sidebar {
+    -webkit-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.5);
+    -moz-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.5);
+    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.5);
     background: #45B4F2;
     color: #fff;
     transition: all 0.5s;
@@ -157,6 +177,13 @@ a[data-toggle="collapse"] {
     #sidebar.active {
         margin-left: 0;
     }
+}
+
+#copyright{
+    margin-top: 200px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 8px;
+    color:azure;
 }
 /*ESTILOS DE EJEMPLO*/
 /*.sidebar-header{

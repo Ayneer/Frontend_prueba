@@ -1,38 +1,48 @@
 @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
 
 .iniciarSesion{
-    margin-top: 70px;
-    margin-left: 400px;
-    margin-right: 400px;  
+    margin:auto;
+    margin-top:80px;
+    /*width:400px;*/
+    width:100%;
+    text-align: center; 
+    outline: none;
 }
 
 .card-title{    
     color: rgb(60,173,228);
-    width: 275px;
-    margin-top:60px;
+    width:100%;
+    /*width: 275px;*/
+    margin-top:30px;
+    text-align: left;
     font-size: 30px;
     font-family: 'Poppins', sans-serif;
     text-decoration: underline;
 }
 
 #cuadroForm{
-    width:400px;
+    /*border:solid 1px black;*/
+    /*width:400px;*/
+    width:100%;
     height: 340px;
-    padding: 0px 30px 80px 30px;
+    /*padding: 0px 30px 80px 30px;*/
     text-align: center;
     font-family: 'Poppins', sans-serif;
+    margin:auto;
 }
 
 #btnIngresar{
     background-color:rgb(60,173,228);
     border:solid 1px rgb(60,173,228);  
     margin-top: 15px;
-    margin-left: 285px;   
+    margin-left: 260px;
+    
 }
 
 .campo{
-    width:300px;
-    margin-left: 40px;
+    /*width:300px;*/
+    width: 100%;
+    /*margin-left: 40px;*/
 }
 
 #campo1{

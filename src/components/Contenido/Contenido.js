@@ -7,7 +7,6 @@ import Reporte from './Reporte/Reporte';
 import Ajustes from './Ajustes/Ajustes';
 import Notificacion from './Notificacion/Notificacion';
 import './contenido.css';
-import IniciarSesion from '../IniciarSesion/IniciarSesion';
 
 class Pagina extends React.Component {
     render() {
