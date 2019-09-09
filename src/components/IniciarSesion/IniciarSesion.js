@@ -4,8 +4,6 @@ import Navbar from '../Navbar/Navbar';
 import Footer from '../Footer/Footer';
 import socketIOClient from "socket.io-client";
 
-let usuario = {};
-
 class IniciarSesion extends React.Component {
 
     respuesta = [];
@@ -22,19 +20,9 @@ class IniciarSesion extends React.Component {
         this.capturarInput = this.capturarInput.bind(this);
         this.iniciarSesion = this.iniciarSesion.bind(this);
     }
-    capturarRespuestaServidor(respuestaS) {
-        console.log(usuario);
-        if (!respuestaS.estado) {
-            this.props.history.push('/');// Se redirecciona a inicio de sesion
-        } else {
-            this.props.history.push('/app');// Se redirecciona a inicio de sesion
-            usuario = respuestaS.usuario;
-            console.log(usuario);
-        }
-    }
-
-    componentWillMount() {
-        console.log("cabeza de peo");
+    //Metodo para verificar autenticacion, ejecutado antes de renderizar el componente
+    UNSAFE_componentWillMount() {
+        console.log("cabeza de peo");//Verificacion con servidor para autenticacion
         fetch('http://192.168.1.54:3500/estoyAutenticado', {
             credentials: 'include',
             headers: {
@@ -43,7 +31,11 @@ class IniciarSesion extends React.Component {
             }
         }).then(function (response) {
             return response.json();
-        }).then(res => this.capturarRespuestaServidor(res)).catch(error => console.error('Error:', error));
+        }).then(res => {//Analiza la respuesta del servidor
+            if (res.estado) {//Si la sesion esta activa 
+                this.props.history.push('/app');// Se redirecciona a app
+            }
+        }).catch(error => console.error('Error:', error));
     }
 
     capturarInput(e) {
@@ -53,28 +45,11 @@ class IniciarSesion extends React.Component {
         })
     }
 
-    capturarRespuestaServidor(respuestaS) {
-        console.log(respuestaS);
-        if (respuestaS.Estado) {
-            const socket = socketIOClient('http://192.168.1.54:3500');
-            socket.on('connect', function () { });
-            let correo = document.getElementById('campo1');
-            socket.emit('mi_correo', correo.value);
-            socket.on('recibido', (dato) => {
-                if (dato) {
-                    this.props.history.push('/app');// Se redirecciona a la app 
-                }
-            });
-
-        } else {
-
-        }
-    }
-
+    //Metodo para iniciar sesion
     iniciarSesion(e) {
 
         e.preventDefault();
-        fetch('http://192.168.1.54:3500/iniciarSesion', {
+        fetch('http://192.168.1.54:3500/iniciarSesion', {//Solicitud de inicio de sesion
             method: 'POST',
             credentials: 'include',
             body: JSON.stringify({ correo: this.state.correo, contraseña: this.state.contraseña }),
@@ -83,8 +58,27 @@ class IniciarSesion extends React.Component {
                 'Accept': 'application/json'
             }
         }).then(function (response) {
-            return response.json();
-        }).then(res => this.capturarRespuestaServidor(res)).catch(error => console.error('Error:', error));
+            return response.json();//Analiza respuesta de servidor
+        }).then(res => {
+            if (res.Estado) {//Si no hubo error al iniciar sesion
+                const socket = socketIOClient('http://192.168.1.54:3500');//Me suscribo al socket del servidor
+                socket.on('connect', function () { });
+                let correo = document.getElementById('campo1');
+                socket.on('consumoReal', (consumo)=>{
+                    console.log(consumo);
+                });
+                socket.emit('mi_correo', correo.value);//Emitir correo por socket
+                socket.on('recibido', (dato) => {//Si se acepta el correo puedo iniciar sesion
+                    if (dato) {
+                        this.props.history.push('/app');// Se redirecciona a la app 
+                    }
+                });
+
+            } else {
+                //Mensaje de error de falla en inicio de sesion 
+            }
+
+        }).catch(error => console.error('Error:', error));
     }
 
     render() {

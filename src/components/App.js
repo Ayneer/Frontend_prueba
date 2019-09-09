@@ -16,25 +16,16 @@ class App extends React.Component {
     super();
 
     this.state = {
-      estado: ""
+      estado: "",
+      mostrar: false
     }
 
     this.cambiarEstado = this.cambiarEstado.bind(this);
     this.cerrarSesion = this.cerrarSesion.bind(this);
 
   }
-
-  capturarRespuestaServidor(respuestaS) {
-    console.log(usuario);
-    if (!respuestaS.estado) {
-      this.props.history.push('/');// Se redirecciona a inicio de sesion
-    } else {
-      usuario = respuestaS.usuario;
-      console.log(usuario);
-    }
-  }
-  
-  componentWillMount() {
+  //Metodo para verificar si esta autenticado
+  componentDidMount() {//Se realiza verificacion con servidor
     fetch('http://192.168.1.54:3500/estoyAutenticado', {
       credentials: 'include',
       headers: {
@@ -43,9 +34,18 @@ class App extends React.Component {
       }
     }).then(function (response) {
       return response.json();
-    }).then(res => this.capturarRespuestaServidor(res)).catch(error => console.error('Error:', error));
+    }).then(res => {//Analiza respuesta de servidor
+      if (!res.estado) {//Si el usuario no esta autenticado
+        this.props.history.push('/');// Se redirecciona a inicio de sesion
+      } else {//Si el usuario esta autenticado
+        usuario = res.usuario;//Capturamos los datos del usuario
+        this.setState({ mostrar: true });//Habilitamos la vista de /app
+        console.log(usuario);
+      }
 
+    }).catch(error => console.error('Error:', error));
   }
+
 
   cambiarEstado() {
     if (this.state.estado === "") {
@@ -58,56 +58,59 @@ class App extends React.Component {
       });
     }
   }
-
-  redireccionar(res) {
-    if (res.estado) {
-      this.props.history.push('/');// Se redirecciona al login 
-
-    }
-  }
-
+  //Metodo para cerrar sesion de usuario 
   cerrarSesion() {
-    const socket = socketIOClient('http://192.168.1.54:3500');
+    const socket = socketIOClient('http://192.168.1.54:3500');//Conexion con socket servidor
     socket.on('connect', function () { });
-    socket.emit('salir', usuario.correo);
-    socket.on('recibido', (dato) => {
-      fetch('http://192.168.1.54:3500/cerrarSesion',
-        {
-          credentials: 'include'
-        })
-        .then(function (response) {
+    socket.emit('salir', usuario.correo);//Emitir correo para solicitar salir de sesion
+    socket.on('recibido', (dato) => {//El correo el usuario es recibido
+      fetch('http://192.168.1.54:3500/cerrarSesion', {//Solicitud para cerrar sesion
+        credentials: 'include'
+      })
+        .then(function (response) {//Analiza respuesta de servidor
           return response.json();
         })
-        .then(res => this.redireccionar(res));
+        .then(res => {
+          if (res.estado) {
+            this.props.history.push('/');// Se redirecciona a iniciar sesion
+          }
+        });
     });
   }
 
   render() {
-    console.log("soy render");
-    return (
 
-      <BrowserRouter>
-        <div className="App">
+    if (this.state.mostrar) {
+      console.log("soy render");
+      return (
 
-          <div id="app">
+        <BrowserRouter>
+          <div className="App">
 
-            <Menu estado={this.state.estado} />
+            <div id="app">
 
-            <div id="principal">
+              <Menu estado={this.state.estado} />
 
-              <Navbar metodo={this.cambiarEstado} cerrarSesion={this.cerrarSesion} />
+              <div id="principal">
 
-              <Contenido />
+                <Navbar metodo={this.cambiarEstado} cerrarSesion={this.cerrarSesion} />
+
+                <Contenido />
+
+              </div>
 
             </div>
-
           </div>
 
+        </BrowserRouter>
+      );
+    } else {
+      return (
 
-        </div>
+        <div></div>
+      );
 
-      </BrowserRouter>
-    );
+    }
 
   }
 

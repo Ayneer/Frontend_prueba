@@ -13,6 +13,7 @@ class Pagina extends React.Component {
         return (
             <div id="contenido">
                 <Switch>
+                    <Route path="/app" component={Consumo}/>
                     <Route path="/app/consumo" component={Consumo} />
                     <Route path="/app/historial" component={Historial} />
                     <Route path="/app/limite" component={Limite} />
