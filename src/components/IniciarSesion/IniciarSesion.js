@@ -2,7 +2,6 @@ import React from 'react';
 import './iniciarSesion.css';
 import Navbar from '../Navbar/Navbar';
 import Footer from '../Footer/Footer';
-import socketIOClient from "socket.io-client";
 
 class IniciarSesion extends React.Component {
 
@@ -61,8 +60,8 @@ class IniciarSesion extends React.Component {
             return response.json();//Analiza respuesta de servidor
         }).then(res => {
             if (res.Estado) {//Si no hubo error al iniciar sesion
-                const socket = socketIOClient('http://192.168.1.54:3500');//Me suscribo al socket del servidor
-                socket.on('connect', function () { });
+                const socket = this.props.socket;//Me suscribo al socket del servidor
+                console.log(socket.id);
                 let correo = document.getElementById('campo1');
                 socket.on('consumoReal', (consumo)=>{
                     console.log(consumo);

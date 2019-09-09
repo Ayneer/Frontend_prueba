@@ -78,13 +78,13 @@ class Menu extends React.Component {
 
                         {/* Items del menú */}
                         <li className="impar">
-                            <button id="consumo" className="item" >Mi consumo
-                            <Link to='/app/consumo'> mi consumo</Link>
+                            <button id="consumo" className="item" >
+                                <Link to='/app/consumo'>Mi consumo</Link>
                             </button>
                         </li>
                         <li className="par">
-                            <button id="historial" className="item">Mi historial
-                            <Link to='/app/historial'></Link>
+                            <button id="historial" className="item">
+                                <Link to='/app/historial'>Mi historial</Link>
                             </button>
                         </li>
                         <li className="impar">

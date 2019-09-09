@@ -10,11 +10,13 @@ import './contenido.css';
 
 class Pagina extends React.Component {
     render() {
+        const socket = this.props.socket;
+        console.log(socket);
         return (
             <div id="contenido">
                 <Switch>
-                    <Route path="/app" component={Consumo}/>
-                    <Route path="/app/consumo" component={Consumo} />
+                    <Route path="/app" render={()=> <Consumo socket={socket} name={"hola"} />}/>
+                    <Route path="/app/consumo" render={()=> <Consumo socket={socket} name={"hola"} />} />
                     <Route path="/app/historial" component={Historial} />
                     <Route path="/app/limite" component={Limite} />
                     <Route path="/app/generarReporte" component={Reporte} />

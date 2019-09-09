@@ -5,12 +5,13 @@ let usuario = {};
 
 class Consumo extends React.Component {
 
-    constructor(){
+    constructor() {
 
         super();
-        this.state={consumo:5};
+        this.state = { consumo: 0 };
 
     }
+
     //Metodo para verificar si el usuario esta atenticado
     componentWillMount() {
         console.log("soy comoponent will");
@@ -35,7 +36,7 @@ class Consumo extends React.Component {
     //Metodo para realizar consulta de consumo
     consultarConsumo(correo) {
         console.log(usuario.correo);
-        fetch('http://192.168.1.54:3500/consumo/' +correo, {//Solicitr consumo real
+        fetch('http://192.168.1.54:3500/consumo/' + correo, {//Solicitr consumo real
             credentials: 'include',
             headers: {
                 'Content-Type': 'application/json; charset=UTF-8',
@@ -44,11 +45,11 @@ class Consumo extends React.Component {
         }).then(function (response) {//Analiza respuesta
             return response.json();
         }).then(res => {
-            if(!res.estado){
-                
+            if (!res.estado) {
+                console.log(res);
                 //Mensaje de que no existe consumo
-            }else{
-                
+            } else {
+                this.setState({ consumo: res.consumoMes.consumoMes })
                 this.capturarConsumos();
                 //Actualizar estado del consumo real 
             }
@@ -56,15 +57,22 @@ class Consumo extends React.Component {
 
     }
 
-    capturarConsumos(){
-        const socket = socketIOClient('http://192.168.1.54:3500');
-        socket.on('connect', function () { });
-        socket.on('consumoReal', (consumo)=>{
-            this.setState({consumo:consumo.consumoMes})
-        });
+    capturarConsumos() {
+
     }
+    /*componentDidMount() {
+        const socket = this.props.socket;
+        socket.on('consumoReal', (consumo) => {
+            //this.setState({ consumo: consumo.consumoMes })
+        });
+    }*/
 
     render() {
+        const socket = this.props.socket;
+        socket.on('consumoReal', (consumo) => {
+            console.log(consumo);
+            this.setState({ consumo: consumo.consumoMes })
+        });
         return (
             <div id="contenido">
                 <div className="row">

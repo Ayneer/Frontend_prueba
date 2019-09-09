@@ -5,7 +5,6 @@ import Menu from './Menu/Menu';
 import Navbar from './Navbar/Navbar';
 import Contenido from './Contenido/Contenido';
 import Footer from './Footer/Footer';
-import socketIOClient from "socket.io-client";
 
 let usuario = {};
 
@@ -60,8 +59,7 @@ class App extends React.Component {
   }
   //Metodo para cerrar sesion de usuario 
   cerrarSesion() {
-    const socket = socketIOClient('http://192.168.1.54:3500');//Conexion con socket servidor
-    socket.on('connect', function () { });
+    const socket = this.props.socket;//Conexion con socket servidor
     socket.emit('salir', usuario.correo);//Emitir correo para solicitar salir de sesion
     socket.on('recibido', (dato) => {//El correo el usuario es recibido
       fetch('http://192.168.1.54:3500/cerrarSesion', {//Solicitud para cerrar sesion
@@ -72,6 +70,8 @@ class App extends React.Component {
         })
         .then(res => {
           if (res.estado) {
+            console.log(res);
+            this.props.crearSocket();
             this.props.history.push('/');// Se redirecciona a iniciar sesion
           }
         });
@@ -81,7 +81,7 @@ class App extends React.Component {
   render() {
 
     if (this.state.mostrar) {
-      console.log("soy render");
+      console.log(this.props.socket);
       return (
 
         <BrowserRouter>
@@ -95,7 +95,7 @@ class App extends React.Component {
 
                 <Navbar metodo={this.cambiarEstado} cerrarSesion={this.cerrarSesion} />
 
-                <Contenido />
+                <Contenido socket={this.props.socket}/>
 
               </div>
 
