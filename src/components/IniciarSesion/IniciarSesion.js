@@ -18,6 +18,7 @@ class IniciarSesion extends React.Component {
 
         this.capturarInput = this.capturarInput.bind(this);
         this.iniciarSesion = this.iniciarSesion.bind(this);
+
     }
     //Metodo para verificar autenticacion, ejecutado antes de renderizar el componente
     UNSAFE_componentWillMount() {
@@ -60,12 +61,10 @@ class IniciarSesion extends React.Component {
             return response.json();//Analiza respuesta de servidor
         }).then(res => {
             if (res.Estado) {//Si no hubo error al iniciar sesion
+               // this.props.crearSocket();
                 const socket = this.props.socket;//Me suscribo al socket del servidor
-                console.log(socket.id);
+                console.log(socket);
                 let correo = document.getElementById('campo1');
-                socket.on('consumoReal', (consumo)=>{
-                    console.log(consumo);
-                });
                 socket.emit('mi_correo', correo.value);//Emitir correo por socket
                 socket.on('recibido', (dato) => {//Si se acepta el correo puedo iniciar sesion
                     if (dato) {
@@ -79,7 +78,9 @@ class IniciarSesion extends React.Component {
 
         }).catch(error => console.error('Error:', error));
     }
-
+    componentDidMount(){
+        console.log(this.props.socket);
+    }
     render() {
 
         return (

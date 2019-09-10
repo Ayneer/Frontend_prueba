@@ -50,29 +50,19 @@ class Consumo extends React.Component {
                 //Mensaje de que no existe consumo
             } else {
                 this.setState({ consumo: res.consumoMes.consumoMes })
-                this.capturarConsumos();
+                const socket = this.props.socket;
+                socket.on('consumoReal', (consumo) => {
+                    console.log(consumo);
+                    this.setState({ consumo: consumo })
+                });
                 //Actualizar estado del consumo real 
             }
         }).catch(error => console.error('Error:', error));
 
     }
 
-    capturarConsumos() {
-
-    }
-    /*componentDidMount() {
-        const socket = this.props.socket;
-        socket.on('consumoReal', (consumo) => {
-            //this.setState({ consumo: consumo.consumoMes })
-        });
-    }*/
-
     render() {
-        const socket = this.props.socket;
-        socket.on('consumoReal', (consumo) => {
-            console.log(consumo);
-            this.setState({ consumo: consumo.consumoMes })
-        });
+
         return (
             <div id="contenido">
                 <div className="row">
