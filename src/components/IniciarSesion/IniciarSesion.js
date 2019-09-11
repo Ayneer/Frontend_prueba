@@ -3,6 +3,8 @@ import './iniciarSesion.css';
 import Navbar from '../Navbar/Navbar';
 import Footer from '../Footer/Footer';
 
+let usuario = null;
+
 class IniciarSesion extends React.Component {
 
     respuesta = [];
@@ -13,11 +15,15 @@ class IniciarSesion extends React.Component {
         this.state = {
             correo: "",
             contraseña: "",
-            mensaje: ""
+            contraseña_1: "",
+            mensaje: "",
+            cambiarClave: false,
+            mensajeClave: "Ingrese su contraseña"
         }
 
         this.capturarInput = this.capturarInput.bind(this);
         this.iniciarSesion = this.iniciarSesion.bind(this);
+        this.cambiarClave = this.cambiarClave.bind(this);
 
     }
     //Metodo para verificar autenticacion, ejecutado antes de renderizar el componente
@@ -60,17 +66,24 @@ class IniciarSesion extends React.Component {
         }).then(function (response) {
             return response.json();//Analiza respuesta de servidor
         }).then(res => {
-            if (res.Estado) {//Si no hubo error al iniciar sesion
-               // this.props.crearSocket();
-                const socket = this.props.socket;//Me suscribo al socket del servidor
-                console.log(socket);
-                let correo = document.getElementById('campo1');
-                socket.emit('mi_correo', correo.value);//Emitir correo por socket
-                socket.on('recibido', (dato) => {//Si se acepta el correo puedo iniciar sesion
-                    if (dato) {
-                        this.props.history.push('/app');// Se redirecciona a la app 
-                    }
-                });
+            if (res.Estado) {//Si NO hubo error al iniciar sesion
+                usuario = res.usuario;
+                if (!res.activo) {
+                    this.setState({
+                        cambiarClave: true,
+                        mensajeClave: "Repita su contrasena",
+                        contraseña: ""
+                    });
+                } else {
+                    const socket = this.props.socket;//Me suscribo al socket del servidor
+                    socket.emit('mi_correo', usuario.correo);//Emitir correo por socket
+                    socket.on('recibido', (dato) => {//Si se acepta el correo puedo iniciar sesion
+                        if (dato) {
+                            this.props.history.push('/app');// Se redirecciona a la app 
+                        }
+                    });
+                }
+
 
             } else {
                 //Mensaje de error de falla en inicio de sesion 
@@ -78,11 +91,56 @@ class IniciarSesion extends React.Component {
 
         }).catch(error => console.error('Error:', error));
     }
-    componentDidMount(){
-        console.log(this.props.socket);
-    }
-    render() {
 
+    cambiarClave(e) {
+        e.preventDefault();
+        console.log("Cambiando clave...");
+        if (this.state.contraseña === this.state.contraseña_1) {
+            if (this.state.contraseña_1 != usuario.correo) {
+                console.log("Cambiando clave 2...");
+                fetch('http://192.168.1.54:3500/cliente/' + usuario.correo, {//Solicitud cambio de contrase
+                    method: 'PUT',
+                    credentials: 'include',
+                    body: JSON.stringify({ sesionP: true, contraseña: this.state.contraseña }),
+                    headers: {
+                        'Content-Type': 'application/json; charset=UTF-8',
+                        'Accept': 'application/json'
+                    }
+                }).then(function (response) {
+                    return response.json();//Analiza respuesta de servidor
+                }).then(res => {
+                    console.log(res);
+                    if (res.estado) {
+                        console.log("clave cambiada con exito");
+                        const socket = this.props.socket;//Me suscribo al socket del servidor
+                        socket.emit('mi_correo', usuario.correo);//Emitir correo por socket
+                        socket.on('recibido', (dato) => {//Si se acepta el correo puedo iniciar sesion
+                            if (dato) {
+                                this.props.history.push('/app');// Se redirecciona a la app 
+                            }
+                        });
+                    } else {
+                        console.log("Error al cambiar clave");
+                    }
+                });
+            } else {
+                console.log("clave igual que correo!");
+                console.log("claves1: ", this.state.contraseña_1);
+                console.log("claves2: ", this.state.contraseña);
+                console.log(usuario);
+                // contrase;a igual al correo
+            }
+        } else {
+            console.log("claves diferentes");
+            console.log("claves1: ", this.state.contraseña_1);
+            console.log("claves2: ", this.state.contraseña);
+            // contrase;as diferentes
+        }
+
+    }
+
+    render() {
+        const { cambiarClave, mensajeClave } = this.state;
         return (
 
             <div>
@@ -99,13 +157,28 @@ class IniciarSesion extends React.Component {
                                 </button>
                             </div>
                             <form>
-                                <div className="form-group">
-                                    <input id="campo1" type="email" className="campo form-control" ria-describedby="emailHelp" placeholder="Ingrese su correo" name="correo" value={this.state.correo} onChange={this.capturarInput} required />
-                                </div>
+                                {cambiarClave
+                                    ?
+                                    <div className="form-group ">
+                                        <input type="password" className="campo form-control" placeholder="Ingrese su contraseña" name="contraseña_1" value={this.state.contraseña_1} onChange={this.capturarInput} required />
+                                    </div>
+                                    :
+                                    <div className="form-group">
+                                        <input id="campo1" type="email" className="campo form-control" ria-describedby="emailHelp" placeholder="Ingrese su correo" name="correo" value={this.state.correo} onChange={this.capturarInput} required />
+                                    </div>
+                                }
+
                                 <div className="form-group ">
-                                    <input type="password" className="campo form-control" placeholder="Ingrese su contraseña" name="contraseña" value={this.state.contraseña} onChange={this.capturarInput} required />
+                                    <input type="password" className="campo form-control" placeholder={mensajeClave} name="contraseña" value={this.state.contraseña} onChange={this.capturarInput} required />
                                 </div>
-                                <button id="btnIngresar" className="btn btn-primary" onClick={this.iniciarSesion}>Ingresar</button>
+                                {
+                                    cambiarClave
+                                        ?
+                                        <button id="btnIngresar" className="btn btn-primary" onClick={this.cambiarClave}>Cambiar clave</button>
+                                        :
+                                        <button id="btnIngresar" className="btn btn-primary" onClick={this.iniciarSesion}>Ingresar</button>
+                                }
+
                             </form>
                         </div>
                     </div>
