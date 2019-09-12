@@ -79,27 +79,27 @@ class Menu extends React.Component {
                         {/* Items del menú */}
                         <li className="impar">
                             <button id="consumo" className="item" >
-                                <Link to='/app/consumo'>Mi consumo</Link>
+                                <Link to='/consumo'>Mi consumo</Link>
                             </button>
                         </li>
                         <li className="par">
-                            <button id="historial" className="item">
-                                <Link to='/app/historial'>Mi historial</Link>
+                            <button id="consumo" className="item" >
+                                <Link to='/historial'>Mi historial</Link>
                             </button>
                         </li>
                         <li className="impar">
-                            <button id="limite" className="item">Limite
-                            <Link to='/app/limite'></Link>
+                            <button id="limite" className="item">
+                                <Link to='/limite'>Limite</Link>
                             </button>
                         </li>
                         <li className="par">
-                            <button id="reporte" className="item">Generar reporte
-                            <Link to='/app/generarReporte'></Link>
+                            <button id="reporte" className="item">
+                                <Link to='/generarReporte'>Generar reporte</Link>
                             </button>
                         </li>
                         <li className="impar">
-                            <button id="ajustes" className="item">Ajustes
-                            <Link to='/app/ajustes'></Link>
+                            <button id="ajustes" className="item">
+                                <Link to='/ajustes'>Ajustes</Link>
                             </button>
                         </li>
                     </ul>

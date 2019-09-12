@@ -81,7 +81,6 @@ class App extends React.Component {
   render() {
 
     if (this.state.mostrar) {
-      console.log(this.props.socket);
       return (
 
         <BrowserRouter>

@@ -1,6 +1,5 @@
 import React from 'react';
 import "./consumo.css";
-import socketIOClient from "socket.io-client";
 let usuario = {};
 
 class Consumo extends React.Component {
@@ -32,7 +31,17 @@ class Consumo extends React.Component {
                 this.consultarConsumo(usuario.correo);
             }
         }).catch(error => console.error('Error:', error));
+
+        this.recibirConsumoSocket(this.props.socket);
     }
+
+    recibirConsumoSocket(socket) {
+        socket.on('consumoReal', (consumo) => {
+            console.log(consumo);
+            this.setState({ consumo: consumo })
+        });
+    }
+
     //Metodo para realizar consulta de consumo
     consultarConsumo(correo) {
         console.log(usuario.correo);
@@ -50,11 +59,6 @@ class Consumo extends React.Component {
                 //Mensaje de que no existe consumo
             } else {
                 this.setState({ consumo: res.consumoMes.consumoMes })
-                const socket = this.props.socket;
-                socket.on('consumoReal', (consumo) => {
-                    console.log(consumo);
-                    this.setState({ consumo: consumo })
-                });
                 //Actualizar estado del consumo real 
             }
         }).catch(error => console.error('Error:', error));
