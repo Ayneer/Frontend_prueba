@@ -1,7 +1,7 @@
 import React from 'react';
 import "./consumo.css";
-let usuario = {};
-
+let usuario;
+let consumo = 0;
 class Consumo extends React.Component {
 
     constructor() {
@@ -9,37 +9,6 @@ class Consumo extends React.Component {
         super();
         this.state = { consumo: 0 };
 
-    }
-
-    //Metodo para verificar si el usuario esta atenticado
-    componentWillMount() {
-        console.log("soy comoponent will");
-        fetch('http://192.168.1.54:3500/estoyAutenticado', {//Consulta al sevidor para verificar la atenticidad
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json; charset=UTF-8',
-                'Accept': 'application/json'
-            }
-        }).then(function (response) {//Analiza respuesta de servidor
-            return response.json();
-        }).then(res => {
-            if (!res.estado) {//Si no esta autenticado
-                this.props.history.push('/');// Se redirecciona a inicio de sesion
-            } else {//Si esta autenticado
-                console.log("estoy atenticado");
-                usuario = res.usuario;//Captura datos de usuario
-                this.consultarConsumo(usuario.correo);
-            }
-        }).catch(error => console.error('Error:', error));
-
-        this.recibirConsumoSocket(this.props.socket);
-    }
-
-    recibirConsumoSocket(socket) {
-        socket.on('consumoReal', (consumo) => {
-            console.log(consumo);
-            this.setState({ consumo: consumo })
-        });
     }
 
     //Metodo para realizar consulta de consumo
@@ -55,24 +24,69 @@ class Consumo extends React.Component {
             return response.json();
         }).then(res => {
             if (!res.estado) {
-                console.log(res);
                 //Mensaje de que no existe consumo
             } else {
-                this.setState({ consumo: res.consumoMes.consumoMes })
+                consumo = res.consumoMes.consumoMes;
+                return consumo;
+                //this.setState({ consumo: res.consumoMes.consumoMes })
                 //Actualizar estado del consumo real 
             }
         }).catch(error => console.error('Error:', error));
 
     }
 
-    render() {
+    componentDidMount() {
+        fetch('http://192.168.1.54:3500/estoyAutenticado', {//Consulta al sevidor para verificar la atenticidad
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json; charset=UTF-8',
+                'Accept': 'application/json'
+            }
+        }).then(function (response) {//Analiza respuesta de servidor
+            return response.json();
+        }).then(res => {
+            if (!res.estado) {//Si no esta autenticado
+                this.props.history.push('/');// Se redirecciona a inicio de sesion
+            } else {//Si esta autenticado
+                usuario = res.usuario;//Captura datos de usuario
+                fetch('http://192.168.1.54:3500/consumo/' + usuario.correo, {//Solicitr consumo real
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json; charset=UTF-8',
+                        'Accept': 'application/json'
+                    }
+                }).then(function (response) {//Analiza respuesta
+                    return response.json();
+                }).then(res => {
+                    if (res.estado) {
+                        this.setState({
+                            consumo: res.consumoMes.consumoMes
+                        });
+                    }
+                }).catch(error => console.error('Error:', error));
+            }
+        }).catch(error => console.error('Error:', error));
 
+    }
+
+    render() {
+        consumo = this.props.consumo;
+        let mostrar = true;
+        if (this.state.consumo === 0) {
+            mostrar = false;
+        }
+        if(this.state.consumo <= consumo){
+            mostrar = false;
+        }
         return (
             <div id="contenido">
                 <div className="row">
                     <div id="cuadro1" className="col-11">
                         <h6>Mi consumo actual</h6>
-                        <h1 id="valor">{this.state.consumo}</h1>
+                        {mostrar ?
+                            <h1 id="valor">{this.state.consumo}</h1> :
+                            <h1 id="valor">{consumo}</h1>
+                        }
                     </div>
                 </div>
                 <div className="row">

@@ -81,6 +81,7 @@ class App extends React.Component {
   render() {
 
     if (this.state.mostrar) {
+      console.log("soy render app");
       return (
 
         <BrowserRouter>
@@ -94,7 +95,7 @@ class App extends React.Component {
 
                 <Navbar metodo={this.cambiarEstado} cerrarSesion={this.cerrarSesion} />
 
-                <Contenido socket={this.props.socket}/>
+                <Contenido consumo={this.props.consumo} socket={this.props.socket}/>
 
               </div>
 

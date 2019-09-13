@@ -11,13 +11,20 @@ const crearSocket = function () {
     console.log("cree socket");
 }
 
+const crearSocket2 = function () {
+    socket = socketIOClient('http://192.168.1.54:3500');
+    socket.on('connect', function () { });
+    return socket;
+}
+
 class Sesion extends React.Component {
 
     constructor() {
         super();
 
         this.state = {
-            ok: false
+            ok: false,
+            consumo: 0
         }
 
         console.log('constructor');
@@ -38,8 +45,8 @@ class Sesion extends React.Component {
             }
         });
         const res = await respuesta.json();
-        if (!res.estado) {//Si la sesion esta activa 
-            crearSocket();
+        if (!res.estado) {//Si la sesion esta inactiva 
+           // crearSocket();
             this.setState({ ok: true });
         } else {
             crearSocket();
@@ -49,6 +56,10 @@ class Sesion extends React.Component {
                     this.setState({ ok: true });
                 }
             });
+            socket.on('consumoReal', (consumo) => {
+                console.log(consumo);
+                this.setState({ consumo: consumo });
+            });
         }
         console.log('fin verfi');
     }
@@ -57,16 +68,17 @@ class Sesion extends React.Component {
         if (this.state.ok) {
             console.log('soy sesion');
             return (
-
                 <div id="">
                     <Switch>
-                        <Route path="/app" render={() => <App socket={socket} history={this.props.history} crearSocket={crearSocket} />} />
-                        <Route path="/" render={() => <IniciarSesion socket={socket} history={this.props.history} crearSocket={crearSocket} />} />
+                        <Route path="/app" render={() => <App  consumo={this.state.consumo} socket={socket} history={this.props.history} crearSocket={crearSocket} />} />
+                        <Route path="/" render={() => <IniciarSesion socket={socket} history={this.props.history} crearSocket={crearSocket} crearSocket2={crearSocket2} />} />
                     </Switch>
                 </div>
             )
         } else {
-            return null;
+            return(
+                <div> Cargando ... </div>
+            )
         }
     }
 }

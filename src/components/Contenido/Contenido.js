@@ -15,8 +15,8 @@ class Pagina extends React.Component {
         return (
             <div id="contenido">
                 <Switch>
-                    <Route path="/app" render={()=> <Consumo socket={socket} />}/>
-                    <Route path="/consumo" render={()=> <Consumo socket={socket} />} />
+                    <Route path="/app" render={()=> <Consumo consumo={this.props.consumo} socket={socket} />}/>
+                    <Route path="/consumo" render={()=> <Consumo consumo={this.props.consumo} socket={socket} />} />
                     <Route path="/historial" render={()=><Historial/>}/>
                     <Route path="/limite" component={Limite} />
                     <Route path="/generarReporte" component={Reporte} />

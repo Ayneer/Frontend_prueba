@@ -75,7 +75,8 @@ class IniciarSesion extends React.Component {
                         contraseña: ""
                     });
                 } else {
-                    const socket = this.props.socket;//Me suscribo al socket del servidor
+                    // const socket = this.props.socket;//Me suscribo al socket del servidor
+                    let socket = this.props.crearSocket2();
                     socket.emit('mi_correo', usuario.correo);//Emitir correo por socket
                     socket.on('recibido', (dato) => {//Si se acepta el correo puedo iniciar sesion
                         if (dato) {
