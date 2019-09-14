@@ -1,5 +1,6 @@
 import React from 'react';
 import "./consumo.css";
+
 let usuario;
 let consumo = 0;
 class Consumo extends React.Component {
@@ -36,36 +37,55 @@ class Consumo extends React.Component {
     }
 
     componentDidMount() {
-        fetch('http://192.168.1.54:3500/estoyAutenticado', {//Consulta al sevidor para verificar la atenticidad
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json; charset=UTF-8',
-                'Accept': 'application/json'
-            }
-        }).then(function (response) {//Analiza respuesta de servidor
-            return response.json();
-        }).then(res => {
-            if (!res.estado) {//Si no esta autenticado
-                this.props.history.push('/');// Se redirecciona a inicio de sesion
-            } else {//Si esta autenticado
-                usuario = res.usuario;//Captura datos de usuario
-                fetch('http://192.168.1.54:3500/consumo/' + usuario.correo, {//Solicitr consumo real
-                    credentials: 'include',
-                    headers: {
-                        'Content-Type': 'application/json; charset=UTF-8',
-                        'Accept': 'application/json'
-                    }
-                }).then(function (response) {//Analiza respuesta
-                    return response.json();
-                }).then(res => {
-                    if (res.estado) {
-                        this.setState({
-                            consumo: res.consumoMes.consumoMes
-                        });
-                    }
-                }).catch(error => console.error('Error:', error));
-            }
-        }).catch(error => console.error('Error:', error));
+        if (this.props.usuario !== null) {
+            fetch('http://192.168.1.54:3500/consumo/' + this.props.usuario.correo, {//Solicitr consumo real
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json; charset=UTF-8',
+                    'Accept': 'application/json'
+                }
+            }).then(function (response) {//Analiza respuesta
+                return response.json();
+            }).then(res => {
+                if (res.estado) {
+                    this.setState({
+                        consumo: res.consumoMes.consumoMes
+                    });
+                }
+            }).catch(error => console.error('Error:', error));
+        }else{
+            this.props.history.push('/');// Se redirecciona a inicio de sesion
+        }
+        // fetch('http://192.168.1.54:3500/estoyAutenticado', {//Consulta al sevidor para verificar la atenticidad
+        //     credentials: 'include',
+        //     headers: {
+        //         'Content-Type': 'application/json; charset=UTF-8',
+        //         'Accept': 'application/json'
+        //     }
+        // }).then(function (response) {//Analiza respuesta de servidor
+        //     return response.json();
+        // }).then(res => {
+        //     if (!res.estado) {//Si no esta autenticado
+                
+        //     } else {//Si esta autenticado
+        //         usuario = res.usuario;//Captura datos de usuario
+        //         fetch('http://192.168.1.54:3500/consumo/' + usuario.correo, {//Solicitr consumo real
+        //             credentials: 'include',
+        //             headers: {
+        //                 'Content-Type': 'application/json; charset=UTF-8',
+        //                 'Accept': 'application/json'
+        //             }
+        //         }).then(function (response) {//Analiza respuesta
+        //             return response.json();
+        //         }).then(res => {
+        //             if (res.estado) {
+        //                 this.setState({
+        //                     consumo: res.consumoMes.consumoMes
+        //                 });
+        //             }
+        //         }).catch(error => console.error('Error:', error));
+        //     }
+        // }).catch(error => console.error('Error:', error));
 
     }
 
@@ -75,7 +95,7 @@ class Consumo extends React.Component {
         if (this.state.consumo === 0) {
             mostrar = false;
         }
-        if(this.state.consumo <= consumo){
+        if (this.state.consumo <= consumo) {
             mostrar = false;
         }
         return (

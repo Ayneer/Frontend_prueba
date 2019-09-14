@@ -2,7 +2,6 @@ import React from 'react';
 import Chart from 'chart.js';
 import './historial.css';
 let usuario = {};
-let historial = [];
 let obj = [];
 class Historial extends React.Component {
 
@@ -43,13 +42,13 @@ class Historial extends React.Component {
             arrayconsumoTarde.push(0);
             arrayconsumoNoche.push(0);
         }
-        for (var i = 1; i <= 31; i++) {
-            labels.push(i);
+        for (var t = 1; t <= 31; t++) {
+            labels.push(t);
         }
 
         data.labels = labels;
 
-        for (var i = 0; i < historial.length; i++) {
+        for (i = 0; i < historial.length; i++) {
             var fecha = historial[i].fecha;
             const arrayFecha = fecha.split("/");
             let diaConsumido = +arrayFecha[1];
@@ -58,7 +57,7 @@ class Historial extends React.Component {
 
                 console.log(mes);
 
-                if (historial[i].consumoTarde != undefined) {
+                if (historial[i].consumoTarde !== undefined) {
                     console.log("tiene consumoTarde");
                     for (var h = 0; h < labels.length; h++) {
                         if (labels[h] === diaConsumido) {
@@ -71,9 +70,9 @@ class Historial extends React.Component {
                     data.consumoTarde = arrayconsumoTarde;
                 }
 
-                if (historial[i].consumoMañana != undefined) {
+                if (historial[i].consumoMañana !== undefined) {
                     console.log("tiene consumoMañana");
-                    for (var h = 0; h < labels.length; h++) {
+                    for (h = 0; h < labels.length; h++) {
                         if (labels[h] === diaConsumido) {
                             arrayConsumoManana[h] = historial[i].consumoMañana;
                         }
@@ -84,9 +83,9 @@ class Historial extends React.Component {
                     data.consumoManana = arrayConsumoManana;
                 }
 
-                if (historial[i].consumoMadrugada != undefined) {
+                if (historial[i].consumoMadrugada !== undefined) {
                     console.log("tiene consumoMadrugada");
-                    for (var h = 0; h < labels.length; h++) {
+                    for (h = 0; h < labels.length; h++) {
                         if (labels[h] === diaConsumido) {
                             arrayConsumoMadrugada[h] = historial[i].consumoMadrugada;
                         }
@@ -97,9 +96,9 @@ class Historial extends React.Component {
                     data.consumoMadrugada = arrayConsumoMadrugada;
                 }
 
-                if (historial[i].consumoNoche != undefined) {
+                if (historial[i].consumoNoche !== undefined) {
                     console.log("tiene consumoNoche");
-                    for (var h = 0; h < labels.length; h++) {
+                    for (h = 0; h < labels.length; h++) {
                         if (labels[h] === diaConsumido) {
                             arrayconsumoNoche[h] = historial[i].consumoNoche;
                         }
@@ -252,25 +251,15 @@ class Historial extends React.Component {
     }
 
     componentDidMount() {
-        fetch('http://192.168.1.54:3500/estoyAutenticado', {
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json; charset=UTF-8',
-                'Accept': 'application/json'
-            }
-        }).then(function (response) {
-            return response.json();
-        }).then(res => {
-            if (!res.estado) {
-                this.props.history.push('/');// Se redirecciona a inicio de sesion
-            } else {
-                usuario = res.usuario;
-                this.setState({
-                    mostrarH: true
-                })
-                this.construirTabla(usuario.correo);
-            }
-        }).catch(error => console.error('Error:', error));
+        if(this.props.usuario!==null){
+            usuario = this.props.usuario;
+            this.setState({
+                mostrarH: true
+            })
+            this.construirTabla(usuario.correo);
+        }else{
+            this.props.history.push('/');
+        }
     }
 
     render() {

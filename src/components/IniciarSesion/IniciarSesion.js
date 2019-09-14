@@ -18,7 +18,8 @@ class IniciarSesion extends React.Component {
             contraseña_1: "",
             mensaje: "",
             cambiarClave: false,
-            mensajeClave: "Ingrese su contraseña"
+            mensajeClave: "Ingrese su contraseña",
+            mostrarIniciarS: false
         }
 
         this.capturarInput = this.capturarInput.bind(this);
@@ -26,24 +27,7 @@ class IniciarSesion extends React.Component {
         this.cambiarClave = this.cambiarClave.bind(this);
 
     }
-    //Metodo para verificar autenticacion, ejecutado antes de renderizar el componente
-    UNSAFE_componentWillMount() {
-        console.log("cabeza de peo");//Verificacion con servidor para autenticacion
-        fetch('http://192.168.1.54:3500/estoyAutenticado', {
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json; charset=UTF-8',
-                'Accept': 'application/json'
-            }
-        }).then(function (response) {
-            return response.json();
-        }).then(res => {//Analiza la respuesta del servidor
-            if (res.estado) {//Si la sesion esta activa 
-                this.props.history.push('/app');// Se redirecciona a app
-            }
-        }).catch(error => console.error('Error:', error));
-    }
-
+    
     capturarInput(e) {
         const { value, name } = e.target;
         this.setState({
@@ -77,6 +61,7 @@ class IniciarSesion extends React.Component {
                 } else {
                     // const socket = this.props.socket;//Me suscribo al socket del servidor
                     let socket = this.props.crearSocket2();
+                    this.props.activarSocket(socket);
                     socket.emit('mi_correo', usuario.correo);//Emitir correo por socket
                     socket.on('recibido', (dato) => {//Si se acepta el correo puedo iniciar sesion
                         if (dato) {
@@ -97,7 +82,7 @@ class IniciarSesion extends React.Component {
         e.preventDefault();
         console.log("Cambiando clave...");
         if (this.state.contraseña === this.state.contraseña_1) {
-            if (this.state.contraseña_1 != usuario.correo) {
+            if (this.state.contraseña_1 !== usuario.correo) {
                 console.log("Cambiando clave 2...");
                 fetch('http://192.168.1.54:3500/cliente/' + usuario.correo, {//Solicitud cambio de contrase
                     method: 'PUT',
@@ -140,55 +125,79 @@ class IniciarSesion extends React.Component {
 
     }
 
+    componentDidMount(){
+        fetch('http://192.168.1.54:3500/estoyAutenticado', {
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json; charset=UTF-8',
+                'Accept': 'application/json'
+            }
+        }).then(function (response) {
+            return response.json();
+        }).then(res => {//Analiza la respuesta del servidor
+            if (res.estado){//Si la sesion esta activa 
+                this.props.history.push('/app');// Se redirecciona a app
+            }else{
+                this.setState({
+                    mostrarIniciarS: true
+                });
+            }
+        }).catch(error => console.error('Error:', error));
+    }
+
     render() {
-        const { cambiarClave, mensajeClave } = this.state;
-        return (
+        if (this.state.mostrarIniciarS) {
+            const { cambiarClave, mensajeClave } = this.state;
+            return (
+                <div>
 
-            <div>
-
-                {/* <Navbar soyYo='inicioSesion' /> */}
-                <div className="row">
-                    <div className="card iniciarSesion col-sm-12 col-md-6" >
-                        <div id="cuadroForm" className="card-body">
-                            <h5 className="card-title">Iniciar Sesion</h5>
-                            <div className="alert alert-danger alert-dismissible fade show" role="alert" style={{ display: "none" }}>
-                                <strong>{this.state.mensaje}f</strong>
-                                <button type="button" className="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <form>
-                                {cambiarClave
-                                    ?
-                                    <div className="form-group ">
-                                        <input type="password" className="campo form-control" placeholder="Ingrese su contraseña" name="contraseña_1" value={this.state.contraseña_1} onChange={this.capturarInput} required />
-                                    </div>
-                                    :
-                                    <div className="form-group">
-                                        <input id="campo1" type="email" className="campo form-control" ria-describedby="emailHelp" placeholder="Ingrese su correo" name="correo" value={this.state.correo} onChange={this.capturarInput} required />
-                                    </div>
-                                }
-
-                                <div className="form-group ">
-                                    <input type="password" className="campo form-control" placeholder={mensajeClave} name="contraseña" value={this.state.contraseña} onChange={this.capturarInput} required />
+                    {/* <Navbar soyYo='inicioSesion' /> */}
+                    <div className="row">
+                        <div className="card iniciarSesion col-sm-12 col-md-6" >
+                            <div id="cuadroForm" className="card-body">
+                                <h5 className="card-title">Iniciar Sesion</h5>
+                                <div className="alert alert-danger alert-dismissible fade show" role="alert" style={{ display: "none" }}>
+                                    <strong>{this.state.mensaje}f</strong>
+                                    <button type="button" className="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
                                 </div>
-                                {
-                                    cambiarClave
+                                <form>
+                                    {cambiarClave
                                         ?
-                                        <button id="btnIngresar" className="btn btn-primary" onClick={this.cambiarClave}>Cambiar clave</button>
+                                        <div className="form-group ">
+                                            <input type="password" className="campo form-control" placeholder="Ingrese su contraseña" name="contraseña_1" value={this.state.contraseña_1} onChange={this.capturarInput} required />
+                                        </div>
                                         :
-                                        <button id="btnIngresar" className="btn btn-primary" onClick={this.iniciarSesion}>Ingresar</button>
-                                }
+                                        <div className="form-group">
+                                            <input id="campo1" type="email" className="campo form-control" ria-describedby="emailHelp" placeholder="Ingrese su correo" name="correo" value={this.state.correo} onChange={this.capturarInput} required />
+                                        </div>
+                                    }
 
-                            </form>
+                                    <div className="form-group ">
+                                        <input type="password" className="campo form-control" placeholder={mensajeClave} name="contraseña" value={this.state.contraseña} onChange={this.capturarInput} required />
+                                    </div>
+                                    {
+                                        cambiarClave
+                                            ?
+                                            <button id="btnIngresar" className="btn btn-primary" onClick={this.cambiarClave}>Cambiar clave</button>
+                                            :
+                                            <button id="btnIngresar" className="btn btn-primary" onClick={this.iniciarSesion}>Ingresar</button>
+                                    }
+
+                                </form>
+                            </div>
                         </div>
                     </div>
+
+                    <Footer />
+
                 </div>
+            )
+        }else{
+            return (<div>Cargando ...</div>);
+        }
 
-                <Footer />
-
-            </div>
-        )
     }
 }
 
