@@ -29,13 +29,6 @@ class Navbar extends React.Component {
                         <button type="button" id="sidebarCollapse" className="btn btn-info" onClick={this.props.metodo} >
                             <i className="fas fa-align-left"></i>
                         </button>
-                        <Link to="/app/notificaciones">
-                            <button id="msj" type="button" className="btn btn-info" >
-                                <i className="fas fa-align-left"></i>
-
-                            </button>
-                        </Link>
-
                         <button id="cerrar" type="button" className="btn btn-info" onClick={this.props.cerrarSesion} >
                             <i className="fas fa-align-left"></i>
                         </button>

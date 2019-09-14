@@ -27,7 +27,7 @@ class IniciarSesion extends React.Component {
         this.cambiarClave = this.cambiarClave.bind(this);
 
     }
-    
+
     capturarInput(e) {
         const { value, name } = e.target;
         this.setState({
@@ -39,7 +39,7 @@ class IniciarSesion extends React.Component {
     iniciarSesion(e) {
 
         e.preventDefault();
-        fetch('http://192.168.1.54:3500/iniciarSesion', {//Solicitud de inicio de sesion
+        fetch('http://localhost:3500/iniciarSesion', {//Solicitud de inicio de sesion
             method: 'POST',
             credentials: 'include',
             body: JSON.stringify({ correo: this.state.correo, contraseña: this.state.contraseña }),
@@ -61,16 +61,16 @@ class IniciarSesion extends React.Component {
                 } else {
                     // const socket = this.props.socket;//Me suscribo al socket del servidor
                     let socket = this.props.crearSocket2();
-                    this.props.activarSocket(socket);
                     socket.emit('mi_correo', usuario.correo);//Emitir correo por socket
                     socket.on('recibido', (dato) => {//Si se acepta el correo puedo iniciar sesion
                         if (dato) {
-                            this.props.history.push('/app');// Se redirecciona a la app 
+                            console.log("Sesion activa correctamente.");
+                            this.props.activarSocket(socket);
+                            this.props.usuario(usuario);
+                            this.props.history.push('/App');// Se redirecciona a la app 
                         }
                     });
                 }
-
-
             } else {
                 //Mensaje de error de falla en inicio de sesion 
             }
@@ -84,7 +84,7 @@ class IniciarSesion extends React.Component {
         if (this.state.contraseña === this.state.contraseña_1) {
             if (this.state.contraseña_1 !== usuario.correo) {
                 console.log("Cambiando clave 2...");
-                fetch('http://192.168.1.54:3500/cliente/' + usuario.correo, {//Solicitud cambio de contrase
+                fetch('http://localhost:3500/cliente/' + usuario.correo, {//Solicitud cambio de contrase
                     method: 'PUT',
                     credentials: 'include',
                     body: JSON.stringify({ sesionP: true, contraseña: this.state.contraseña }),
@@ -98,11 +98,13 @@ class IniciarSesion extends React.Component {
                     console.log(res);
                     if (res.estado) {
                         console.log("clave cambiada con exito");
-                        const socket = this.props.socket;//Me suscribo al socket del servidor
+                        let socket = this.props.crearSocket2();
                         socket.emit('mi_correo', usuario.correo);//Emitir correo por socket
                         socket.on('recibido', (dato) => {//Si se acepta el correo puedo iniciar sesion
                             if (dato) {
-                                this.props.history.push('/app');// Se redirecciona a la app 
+                                console.log("Sesion activa correctamente.");
+                                this.props.activarSocket(socket);
+                                this.props.history.push('/App');// Se redirecciona a la app 
                             }
                         });
                     } else {
@@ -125,27 +127,32 @@ class IniciarSesion extends React.Component {
 
     }
 
-    componentDidMount(){
-        fetch('http://192.168.1.54:3500/estoyAutenticado', {
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json; charset=UTF-8',
-                'Accept': 'application/json'
-            }
-        }).then(function (response) {
-            return response.json();
-        }).then(res => {//Analiza la respuesta del servidor
-            if (res.estado){//Si la sesion esta activa 
-                this.props.history.push('/app');// Se redirecciona a app
-            }else{
-                this.setState({
-                    mostrarIniciarS: true
-                });
-            }
-        }).catch(error => console.error('Error:', error));
+    componentDidMount() {
+        this.setState({
+            mostrarIniciarS: true
+        });
+        // console.log('componentDidMount Iniciar sesion');
+        // fetch('http://localhost:3500/estoyAutenticado', {
+        //     credentials: 'include',
+        //     headers: {
+        //         'Content-Type': 'application/json; charset=UTF-8',
+        //         'Accept': 'application/json'
+        //     }
+        // }).then(function (response) {
+        //     return response.json();
+        // }).then(res => {//Analiza la respuesta del servidor
+        //     if (res.estado) {//Si la sesion esta activa 
+        //         this.props.history.push('/app');// Se redirecciona a app
+        //     } else {
+        //         this.setState({
+        //             mostrarIniciarS: true
+        //         });
+        //     }
+        // }).catch(error => console.error('Error:', error));
     }
 
     render() {
+        console.log('Render iniciar sesion');
         if (this.state.mostrarIniciarS) {
             const { cambiarClave, mensajeClave } = this.state;
             return (
@@ -194,7 +201,7 @@ class IniciarSesion extends React.Component {
 
                 </div>
             )
-        }else{
+        } else {
             return (<div>Cargando ...</div>);
         }
 

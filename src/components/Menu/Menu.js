@@ -79,27 +79,27 @@ class Menu extends React.Component {
                         {/* Items del menú */}
                         <li className="impar">
                             <button id="consumo" className="item" >
-                                <Link to='/consumo'>Mi consumo</Link>
+                                <Link to='/App/consumo'>Mi consumo</Link>
                             </button>
                         </li>
                         <li className="par">
                             <button id="consumo" className="item" >
-                                <Link to='/historial'>Mi historial</Link>
+                                <Link to='/App/historial'>Mi historial</Link>
                             </button>
                         </li>
                         <li className="impar">
                             <button id="limite" className="item">
-                                <Link to='/limite'>Limite</Link>
+                                <Link to='/App/limite'>Limite</Link>
                             </button>
                         </li>
                         <li className="par">
                             <button id="reporte" className="item">
-                                <Link to='/generarReporte'>Generar reporte</Link>
+                                <Link to='/App/generarReporte'>Generar reporte</Link>
                             </button>
                         </li>
                         <li className="impar">
                             <button id="ajustes" className="item">
-                                <Link to='/ajustes'>Ajustes</Link>
+                                <Link to='/App/ajustes'>Ajustes</Link>
                             </button>
                         </li>
                     </ul>

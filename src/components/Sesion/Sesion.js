@@ -6,14 +6,16 @@ import socketIOClient from "socket.io-client";
 import Push from 'push.js';
 
 let socket = null;//Conexion con socket servidor
+
 const crearSocket = function () {
-    socket = socketIOClient('http://192.168.1.54:3500');
+    socket = socketIOClient('http://localhost:3500');
     socket.on('connect', function () { });
     console.log("cree socket");
 }
 
 const crearSocket2 = function () {//borrar y probar
-    socket = socketIOClient('http://192.168.1.54:3500');
+    console.log("Cree socket");
+    socket = socketIOClient('http://localhost:3500');
     socket.on('connect', function () { });
     return socket;
 }
@@ -25,10 +27,11 @@ class Sesion extends React.Component {
 
         this.state = {
             ok: false,
-            consumo: 0
+            consumo: 0,
+            usuario: {}
         }
+        this.usuario = this.usuario.bind(this);
         this.activarSocket = this.activarSocket.bind(this);
-        console.log('constructor');
     }
 
     //Metodo para verificar autenticacion, ejecutado antes de renderizar el componente
@@ -44,16 +47,22 @@ class Sesion extends React.Component {
                 body: "This is a web notification!",
                 icon: "/icon.png",
                 timeout: 5000,
-                onClick: function() {
+                onClick: function () {
                     console.log(this);
                 }
             });
         });
     }
 
+    usuario(usuario) {
+        this.setState({
+            usuario: usuario
+        })
+    }
+
     async componentDidMount() {
-        console.log('Soy componentDid');
-        const respuesta = await fetch('http://192.168.1.54:3500/estoyAutenticado', {
+        console.log('componentDidMount sesion');
+        const respuesta = await fetch('http://localhost:3500/estoyAutenticado', {
             credentials: 'include',
             headers: {
                 'Content-Type': 'application/json; charset=UTF-8',
@@ -62,29 +71,35 @@ class Sesion extends React.Component {
         });
         const res = await respuesta.json();
         if (!res.estado) {//Si la sesion esta inactiva 
+            this.props.history.push('/');
             this.setState({ ok: true });
         } else {
             const socket = crearSocket2();
-
             socket.emit('actualizarSocket', res.usuario.correo);//Emitir correo por socket
             socket.on('Actualizado', (dato) => {//Si se acepta el correo puedo iniciar sesion
                 if (dato) {
                     this.activarSocket(socket);
-                    this.setState({ ok: true });
+                    console.log("Sesion: Sesin activa, reenviando hacia app");
+                    this.props.history.push('/App');
+                    this.setState({ ok: true, usuario: res.usuario });
                 }
             });
+
         }
-        console.log('fin verfi');
     }
 
     render() {
+        console.log('Render sesion - ok: ' + this.state.ok);
         if (this.state.ok) {
-            console.log('soy sesion');
             return (
                 <div id="">
                     <Switch>
-                        <Route path="/app" render={() => <App consumo={this.state.consumo} socket={socket} history={this.props.history} crearSocket={crearSocket} />} />
-                        <Route path="/" render={() => <IniciarSesion activarSocket={this.activarSocket} socket={socket} history={this.props.history} crearSocket={crearSocket} crearSocket2={crearSocket2} />} />
+
+                        <Route path="/App" render={() => <App consumo={this.state.consumo} socket={socket} history={this.props.history} crearSocket={crearSocket} crearSocket2={crearSocket2} usuario={this.state.usuario} />} />
+
+                        <Route exact path="/" render={() => <IniciarSesion usuario={this.usuario} activarSocket={this.activarSocket} socket={socket} history={this.props.history} crearSocket={crearSocket} crearSocket2={crearSocket2} />} />
+
+                        {/* <Route path="/app/limite" render={() => <App consumo={this.state.consumo} socket={socket} history={this.props.history} crearSocket={crearSocket} crearSocket2={crearSocket2} usuario={this.state.usuario} />} /> */}
                     </Switch>
                 </div>
             )

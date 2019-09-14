@@ -30,16 +30,18 @@ class Pagina extends React.Component {
     render() {
         console.log("soy contenido render");
         if (this.state.activarContenidos) {
+            console.log("contenido activado");
+            console.log("contenido: "+this.state.usuario);
             const socket = this.props.socket;
             return (
                 <div id="contenido">
                     <Switch>
-                        <Route path="/app" render={() => <Consumo usuario={this.state.usuario} consumo={this.props.consumo} socket={socket} />} />
-                        <Route path="/consumo" render={() => <Consumo usuario={this.state.usuario} consumo={this.props.consumo} socket={socket} />} />
-                        <Route path="/historial" render={() => <Historial usuario={this.state.usuario} />} />
-                        <Route path="/limite" render={() => <Limite usuario={this.state.usuario} />} />
-                        <Route path="/generarReporte" component={Reporte} />
-                        <Route path="/ajustes" component={Ajustes} />
+                        <Route exact path="/App" render={() => <Consumo usuario={this.state.usuario} consumo={this.props.consumo} socket={socket} />} />
+                        <Route exact path="/App/consumo" render={() => <Consumo usuario={this.state.usuario} consumo={this.props.consumo} socket={socket} />} />
+                        <Route exact path="/App/historial" render={() => <Historial usuario={this.state.usuario} />} />
+                        <Route exact path="/App/limite" render={() => <Limite usuario={this.state.usuario} />} />
+                        <Route exact path="/App/generarReporte" component={Reporte} />
+                        <Route exact path="/App/ajustes" component={Ajustes} />
 
                     </Switch>
                 </div>

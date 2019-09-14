@@ -177,7 +177,7 @@ class Historial extends React.Component {
         this.setState({
             mostrarTabla: false
         });
-        fetch('http://192.168.1.54:3500/historial/' + usuario.correo, {//Solicitar historial
+        fetch('http://localhost:3500/historial/' + usuario.correo, {//Solicitar historial
             credentials: 'include',
             headers: {
                 'Content-Type': 'application/json; charset=UTF-8',
@@ -200,6 +200,8 @@ class Historial extends React.Component {
     }
 
     construirTabla(correo) {
+        console.log("antes de llenar");
+        console.log(obj);
         obj = [];
         let objMes = [];
         let data = {
@@ -208,7 +210,7 @@ class Historial extends React.Component {
             consumoCosto: Number
         }
 
-        fetch('http://192.168.1.54:3500/historial/' + correo, {//Solicitar historial
+        fetch('http://localhost:3500/historial/' + correo, {//Solicitar historial
             credentials: 'include',
             headers: {
                 'Content-Type': 'application/json; charset=UTF-8',
@@ -224,9 +226,13 @@ class Historial extends React.Component {
                 const arrayFecha = element.fecha.split("/");
                 if (mes.toString() !== arrayFecha[0]) {
                     objMes.push(arrayFecha[0]);
+                    console.log("añado mes: "+arrayFecha[0]);
                     mes = arrayFecha[0];
                 }
             }
+            obj = [];
+            console.log("pasando el primer for");
+            console.log(obj);
             for (let index = 0; index < objMes.length; index++) {
                 let consumoTotal = 0;
                 let costoU = 0;
@@ -241,11 +247,14 @@ class Historial extends React.Component {
                 data.mes = objMes[index];
                 data.consumoTotal = consumoTotal;
                 data.consumoCosto = consumoTotal * costoU;
+                console.log("guardando... "+data.mes+" "+data.consumoCosto+" "+data.consumoTotal);
                 obj.push(data);
+                console.log(obj);
             }
             console.log(obj);
             this.setState({
-                mostrarTabla: true
+                mostrarTabla: true,
+                mostrarH: true
             })
         }).catch(error => console.error('Error:', error));
     }
@@ -253,12 +262,7 @@ class Historial extends React.Component {
     componentDidMount() {
         if(this.props.usuario!==null){
             usuario = this.props.usuario;
-            this.setState({
-                mostrarH: true
-            })
-            this.construirTabla(usuario.correo);
-        }else{
-            this.props.history.push('/');
+            this.construirTabla(usuario.correo);            
         }
     }
 
