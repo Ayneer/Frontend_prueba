@@ -14,7 +14,7 @@ class Historial extends React.Component {
         }
 
         this.consultarHistorial = this.consultarHistorial.bind(this);
-        this.atras= this.atras.bind(this);
+        this.atras = this.atras.bind(this);
     }
 
     obtenerHistoriales(historial, mes) {
@@ -193,10 +193,57 @@ class Historial extends React.Component {
 
     }
 
-    atras(){
+    atras() {
         this.setState({
             mostrarTabla: true
         })
+    }
+
+    nombreMes(mes) {
+        
+        let nombreMes = "";
+        switch (mes) {
+            case 1:
+                nombreMes = "Enero";
+                break;
+            case 2:
+                nombreMes = "Febrero";
+                break;
+            case 3:
+                nombreMes = "Marzo";
+                break;
+            case 4:
+                nombreMes = "Abril";
+                break;
+            case 5:
+                nombreMes = "Mayo";
+                break;
+            case 6:
+                nombreMes = "Junio";
+                break;
+            case 7:
+                nombreMes = "Julio";
+                break;
+            case 8:
+                nombreMes = "Agosto";
+                break;
+            case 9:
+                nombreMes = "Septiembre";
+                break;
+            case 10:
+                nombreMes = "Octubre";
+                break;
+            case 11:
+                nombreMes = "Noviembre";
+                break;
+            case 12:
+                nombreMes = "Diciembre";
+                break;
+            default:
+                nombreMes = "Error";
+                break;
+        }
+        return nombreMes;
     }
 
     construirTabla(correo) {
@@ -204,11 +251,7 @@ class Historial extends React.Component {
         console.log(obj);
         obj = [];
         let objMes = [];
-        let data = {
-            mes: Number,
-            consumoTotal: Number,
-            consumoCosto: Number
-        }
+        let data = {}
 
         fetch('http://localhost:3500/historial/' + correo, {//Solicitar historial
             credentials: 'include',
@@ -222,11 +265,12 @@ class Historial extends React.Component {
             console.log(res.historial);
             let mes = 0;
             for (let index = 0; index < res.historial.length; index++) {
+                console.log(index);
                 const element = res.historial[index];
                 const arrayFecha = element.fecha.split("/");
                 if (mes.toString() !== arrayFecha[0]) {
                     objMes.push(arrayFecha[0]);
-                    console.log("añado mes: "+arrayFecha[0]);
+                    console.log("añado mes: " + arrayFecha[0]);
                     mes = arrayFecha[0];
                 }
             }
@@ -234,6 +278,7 @@ class Historial extends React.Component {
             console.log("pasando el primer for");
             console.log(obj);
             for (let index = 0; index < objMes.length; index++) {
+                console.log(index);
                 let consumoTotal = 0;
                 let costoU = 0;
                 for (let index2 = 0; index2 < res.historial.length; index2++) {
@@ -247,9 +292,10 @@ class Historial extends React.Component {
                 data.mes = objMes[index];
                 data.consumoTotal = consumoTotal;
                 data.consumoCosto = consumoTotal * costoU;
-                console.log("guardando... "+data.mes+" "+data.consumoCosto+" "+data.consumoTotal);
+                console.log("guardando... " + data.mes + " " + data.consumoCosto + " " + data.consumoTotal);
                 obj.push(data);
-                console.log(obj);
+                data = {};
+                console.log(data);
             }
             console.log(obj);
             this.setState({
@@ -260,9 +306,10 @@ class Historial extends React.Component {
     }
 
     componentDidMount() {
-        if(this.props.usuario!==null){
+        console.log("componentDidMount Historial");
+        if (this.props.usuario !== null) {
             usuario = this.props.usuario;
-            this.construirTabla(usuario.correo);            
+            this.construirTabla(usuario.correo);
         }
     }
 
@@ -284,10 +331,10 @@ class Historial extends React.Component {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {obj.map((mes, id) => 
+                                    {obj.map((mes, id) =>
                                         <tr key={id}>
-                                            <th scope="row" >{id}</th>
-                                            <td>{mes.mes}</td>
+                                            <th scope="row" >{id + 1}</th>
+                                            <td>{this.nombreMes(+mes.mes)}</td>
                                             <td>{mes.consumoTotal}</td>
                                             <td>{mes.consumoCosto}</td>
                                             <td>
@@ -295,7 +342,6 @@ class Historial extends React.Component {
                                             </td>
                                         </tr>
                                     )}
-
                                 </tbody>
                             </table>
                         </div>
@@ -304,7 +350,7 @@ class Historial extends React.Component {
                             <canvas id="myChart"></canvas>
                             <button onClick={this.atras} >Atras </button>
                         </div>
-                        
+
                     }
                 </div>
 

@@ -32,12 +32,11 @@ class Pagina extends React.Component {
         if (this.state.activarContenidos) {
             console.log("contenido activado");
             console.log("contenido: "+this.state.usuario);
-            const socket = this.props.socket;
             return (
                 <div id="contenido">
                     <Switch>
-                        <Route exact path="/App" render={() => <Consumo usuario={this.state.usuario} consumo={this.props.consumo} socket={socket} />} />
-                        <Route exact path="/App/consumo" render={() => <Consumo usuario={this.state.usuario} consumo={this.props.consumo} socket={socket} />} />
+                        <Route exact path="/App" render={() => <Consumo usuario={this.state.usuario} consumo={this.props.consumo} />} />
+                        <Route exact path="/App/consumo" render={() => <Consumo usuario={this.state.usuario} consumo={this.props.consumo}/>} />
                         <Route exact path="/App/historial" render={() => <Historial usuario={this.state.usuario} />} />
                         <Route exact path="/App/limite" render={() => <Limite usuario={this.state.usuario} />} />
                         <Route exact path="/App/generarReporte" component={Reporte} />

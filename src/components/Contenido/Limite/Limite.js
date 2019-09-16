@@ -1,7 +1,6 @@
 import React from 'react';
 import "./limite.css";
 
-let usuario = {};
 let opc1 = "Unidad de consumo (kwh)";
 let opc2 = "Pesos colombianos ($)";
 class Limite extends React.Component {
@@ -13,6 +12,7 @@ class Limite extends React.Component {
             mostrarLimite: false,
             usuario: null,
             limite: 0,
+            arrayOpciones: { opc1: "Unidad de consumo (kwh)", opc2: "Pesos colombianos ($)" },
             editarLimite: false,
             disableInput: true,
             opcionLimite: 0
@@ -47,12 +47,15 @@ class Limite extends React.Component {
     }
 
     opcionLimite(evente) {
+        console.log("opcion Limiteeeeee");
         console.log(evente.target.value);
         if (evente.target.value === "Pesos colombianos ($)") {
+            console.log("Guardado en: 1 ");
             this.setState({
                 opcionLimite: 1
             });
         } else {
+            console.log("Guardado en: 2 ");
             this.setState({
                 opcionLimite: 0
             });
@@ -63,7 +66,7 @@ class Limite extends React.Component {
         const limite = this.state.limite;
         console.log(limite);
         if (limite !== 0) {
-            fetch('http://192.168.1.54:3500/cliente/' + this.state.usuario.correo, {//Solicitud cambio de contrase
+            fetch('http://localhost:3500/cliente/' + this.state.usuario.correo, {
                 method: 'PUT',
                 credentials: 'include',
                 body: JSON.stringify({ sesionP: false, actualizarLimite: true, limite: limite, tipoLimite: this.state.opcionLimite }),
@@ -76,9 +79,6 @@ class Limite extends React.Component {
             }).then(res => {
                 if (res.estado) {
                     this.cancelar();
-                    this.setState({
-                        limite: limite
-                    })
                     console.log("limite actualizado con exito");
                 } else {
                     console.log("Error al actualizar limite");
@@ -87,39 +87,44 @@ class Limite extends React.Component {
         }
     }
 
-    componentDidMount() {
-        
+    async componentDidMount() {
+
         if (this.props.usuario !== null) {
             console.log('soy didmo');
-            let limite = 0;
-            let opcionLimite = 0;
-            if (this.props.usuario.limite) {
-                limite = this.props.usuario.limite;
-                opcionLimite = this.props.usuario.tipoLimite;
-                console.log(opcionLimite);
-                if(opcionLimite === 1){
-                    console.log("Pesos colombianos ($)");
-                    opc1 = "Pesos colombianos ($)";
-                    opc2 = "Unidad de consumo (kwh)";
-                }else{
-                    console.log("Unidad de consumo (kwh)");
-                    opc1 = "Unidad de consumo (kwh)";
-                    opc2 = "Pesos colombianos ($)";
+            const respuesta = await fetch('http://localhost:3500/clientes/' + this.props.usuario.correo, {
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json; charset=UTF-8',
+                    'Accept': 'application/json'
                 }
-            } 
-            this.setState({
-                mostrarLimite: true,
-                usuario: this.props.usuario,
-                limite: limite,
-                opcionLimite: opcionLimite
             });
-            //document.getElementById("campo").disabled = true;
+            const res = await respuesta.json();
+            if (res.estado) {
+                if (res.cliente.limite) {
+                    if (res.cliente.tipoLimite === 1) {
+                        console.log("Pesos colombianos ($)");
+                        opc1 = "Pesos colombianos ($)";
+                        opc2 = "Unidad de consumo (kwh)";
+                    } else {
+                        console.log("Unidad de consumo (kwh)");
+                        opc1 = "Unidad de consumo (kwh)";
+                        opc2 = "Pesos colombianos ($)";
+                    }
+                    this.setState({
+                        mostrarLimite: true,
+                        usuario: res.cliente,
+                        limite: res.cliente.limite,
+                        opcionLimite: res.cliente.tipoLimite,
+                        arrayOpciones: { opc1, opc2 }
+                    });
+                }
+            }
         }
     }
 
     render() {
         if (this.state.mostrarLimite) {
-            const { usuario, limite, editarLimite, disableInput } = this.state;
+            const { usuario, limite, editarLimite, disableInput, arrayOpciones } = this.state;
             let mensaje = null;
             if (usuario.limite) {
                 mensaje = usuario.limite;
@@ -133,8 +138,8 @@ class Limite extends React.Component {
                             <h6>Nuevo limite</h6>
                             <div id="form">
                                 <select id="opciones" disabled={disableInput} onChange={this.opcionLimite}>
-                                    <option>{opc1}</option>
-                                    <option>{opc2}</option>
+                                    <option>{arrayOpciones.opc1}</option>
+                                    <option>{arrayOpciones.opc2}</option>
                                 </select>
                                 <input className="form-control" id="campo" onChange={this.input} value={limite} placeholder="Ingrese nuevo valor" disabled={disableInput} />
                                 {editarLimite ?

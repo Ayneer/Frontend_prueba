@@ -59,7 +59,6 @@ class IniciarSesion extends React.Component {
                         contraseña: ""
                     });
                 } else {
-                    // const socket = this.props.socket;//Me suscribo al socket del servidor
                     let socket = this.props.crearSocket2();
                     socket.emit('mi_correo', usuario.correo);//Emitir correo por socket
                     socket.on('recibido', (dato) => {//Si se acepta el correo puedo iniciar sesion
@@ -73,6 +72,7 @@ class IniciarSesion extends React.Component {
                 }
             } else {
                 //Mensaje de error de falla en inicio de sesion 
+                console.log(res);
             }
 
         }).catch(error => console.error('Error:', error));
@@ -104,6 +104,7 @@ class IniciarSesion extends React.Component {
                             if (dato) {
                                 console.log("Sesion activa correctamente.");
                                 this.props.activarSocket(socket);
+                                this.props.usuario(usuario);
                                 this.props.history.push('/App');// Se redirecciona a la app 
                             }
                         });
@@ -128,27 +129,10 @@ class IniciarSesion extends React.Component {
     }
 
     componentDidMount() {
+        console.log("componentDidMount Iniciar sesion")
         this.setState({
             mostrarIniciarS: true
         });
-        // console.log('componentDidMount Iniciar sesion');
-        // fetch('http://localhost:3500/estoyAutenticado', {
-        //     credentials: 'include',
-        //     headers: {
-        //         'Content-Type': 'application/json; charset=UTF-8',
-        //         'Accept': 'application/json'
-        //     }
-        // }).then(function (response) {
-        //     return response.json();
-        // }).then(res => {//Analiza la respuesta del servidor
-        //     if (res.estado) {//Si la sesion esta activa 
-        //         this.props.history.push('/app');// Se redirecciona a app
-        //     } else {
-        //         this.setState({
-        //             mostrarIniciarS: true
-        //         });
-        //     }
-        // }).catch(error => console.error('Error:', error));
     }
 
     render() {

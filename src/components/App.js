@@ -1,5 +1,4 @@
 import React from 'react';
-import { BrowserRouter } from 'react-router-dom';
 import './App.css';
 import Menu from './Menu/Menu';
 import Navbar from './Navbar/Navbar';
@@ -25,24 +24,6 @@ class App extends React.Component {
   }
   //Metodo para verificar si esta autenticado
   componentDidMount() {//Se realiza verificacion con servidor
-    // fetch('http://192.168.1.54:3500/estoyAutenticado', {
-    //   credentials: 'include',
-    //   headers: {
-    //     'Content-Type': 'application/json; charset=UTF-8',
-    //     'Accept': 'application/json'
-    //   }
-    // }).then(function (response) {
-    //   return response.json();
-    // }).then(res => {//Analiza respuesta de servidor
-    //   if (!res.estado) {//Si el usuario no esta autenticado
-    //     this.props.history.push('/');// Se redirecciona a inicio de sesion
-    //   } else {//Si el usuario esta autenticado
-    //     usuario = res.usuario;//Capturamos los datos del usuario
-    //     this.setState({ mostrar: true });//Habilitamos la vista de /app
-    //     console.log(usuario);
-    //   }
-
-    // }).catch(error => console.error('Error:', error));
     if(this.props.usuario.correo){
       console.log(this.props.usuario);
       usuario = this.props.usuario;
@@ -65,7 +46,6 @@ class App extends React.Component {
 
   //Metodo para cerrar sesion de usuario 
   cerrarSesion() {
-    //const socket = this.props.socket;//Conexion con socket servidor
     const socket = this.props.crearSocket2();
     socket.emit('salir', usuario.correo);//Emitir correo para solicitar salir de sesion
     socket.on('recibido', (dato) => {//El correo el usuario es recibido
@@ -78,8 +58,8 @@ class App extends React.Component {
         .then(res => {
           if (res.estado) {
             console.log(res);
-            //this.props.crearSocket();
-            this.props.history.push('/');// Se redirecciona a iniciar sesion
+            this.props.sesionActiva(false);
+            window.location.reload();
           }
         });
     });
@@ -103,7 +83,7 @@ class App extends React.Component {
 
                 <Navbar metodo={this.cambiarEstado} cerrarSesion={this.cerrarSesion} />
 
-                <Contenido consumo={this.props.consumo} socket={this.props.socket} usuario={usuario}/>
+                <Contenido consumo={this.props.consumo} usuario={usuario}/>
 
               </div>
 
@@ -115,7 +95,7 @@ class App extends React.Component {
     } else {
       return (
 
-        <div></div>
+        <div>Cargando...</div>
       );
 
     }

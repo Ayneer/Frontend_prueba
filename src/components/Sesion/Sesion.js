@@ -7,12 +7,6 @@ import Push from 'push.js';
 
 let socket = null;//Conexion con socket servidor
 
-const crearSocket = function () {
-    socket = socketIOClient('http://localhost:3500');
-    socket.on('connect', function () { });
-    console.log("cree socket");
-}
-
 const crearSocket2 = function () {//borrar y probar
     console.log("Cree socket");
     socket = socketIOClient('http://localhost:3500');
@@ -28,14 +22,15 @@ class Sesion extends React.Component {
         this.state = {
             ok: false,
             consumo: 0,
-            usuario: {}
+            usuario: {},
+            sesionActiva: false
         }
         this.usuario = this.usuario.bind(this);
         this.activarSocket = this.activarSocket.bind(this);
+        this.sesionActiva = this.sesionActiva.bind(this);
     }
 
-    //Metodo para verificar autenticacion, ejecutado antes de renderizar el componente
-    activarSocket(socket) {//Verificacion con servidor para 
+    activarSocket(socket) {
         console.log("Socket activado");
         socket.on('consumoReal', (consumo) => {
             console.log(consumo);
@@ -52,6 +47,11 @@ class Sesion extends React.Component {
                 }
             });
         });
+        this.sesionActiva(true);
+    }
+
+    sesionActiva(estado){
+        this.setState({sesionActiva: estado});
     }
 
     usuario(usuario) {
@@ -94,12 +94,11 @@ class Sesion extends React.Component {
             return (
                 <div id="">
                     <Switch>
-
-                        <Route path="/App" render={() => <App consumo={this.state.consumo} socket={socket} history={this.props.history} crearSocket={crearSocket} crearSocket2={crearSocket2} usuario={this.state.usuario} />} />
-
-                        <Route exact path="/" render={() => <IniciarSesion usuario={this.usuario} activarSocket={this.activarSocket} socket={socket} history={this.props.history} crearSocket={crearSocket} crearSocket2={crearSocket2} />} />
-
-                        {/* <Route path="/app/limite" render={() => <App consumo={this.state.consumo} socket={socket} history={this.props.history} crearSocket={crearSocket} crearSocket2={crearSocket2} usuario={this.state.usuario} />} /> */}
+                        {this.state.sesionActiva ? 
+                            <Route path="/App" render={() => <App consumo={this.state.consumo} sesionActiva={this.sesionActiva} history={this.props.history} crearSocket2={crearSocket2} usuario={this.state.usuario} />} /> 
+                            : 
+                            <Route path="/" render={() => <IniciarSesion usuario={this.usuario} activarSocket={this.activarSocket} history={this.props.history} crearSocket2={crearSocket2} />} />
+                        }
                     </Switch>
                 </div>
             )
