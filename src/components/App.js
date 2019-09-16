@@ -49,7 +49,7 @@ class App extends React.Component {
     const socket = this.props.crearSocket2();
     socket.emit('salir', usuario.correo);//Emitir correo para solicitar salir de sesion
     socket.on('recibido', (dato) => {//El correo el usuario es recibido
-      fetch('http://localhost:3500/cerrarSesion', {//Solicitud para cerrar sesion
+      fetch(this.props.url+'/cerrarSesion', {//Solicitud para cerrar sesion
         credentials: 'include'
       })
         .then(function (response) {//Analiza respuesta de servidor
@@ -66,7 +66,6 @@ class App extends React.Component {
   }
 
   render() {
-
     if (this.state.mostrar) {
       console.log("soy render app");
       console.log("App: "+usuario);
@@ -83,7 +82,7 @@ class App extends React.Component {
 
                 <Navbar metodo={this.cambiarEstado} cerrarSesion={this.cerrarSesion} />
 
-                <Contenido consumo={this.props.consumo} usuario={usuario}/>
+                <Contenido consumo={this.props.consumo} usuario={usuario} url={this.props.url} />
 
               </div>
 

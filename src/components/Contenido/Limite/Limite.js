@@ -66,7 +66,7 @@ class Limite extends React.Component {
         const limite = this.state.limite;
         console.log(limite);
         if (limite !== 0) {
-            fetch('http://localhost:3500/cliente/' + this.state.usuario.correo, {
+            fetch(this.props.url+'/cliente/' + this.state.usuario.correo, {
                 method: 'PUT',
                 credentials: 'include',
                 body: JSON.stringify({ sesionP: false, actualizarLimite: true, limite: limite, tipoLimite: this.state.opcionLimite }),
@@ -91,7 +91,7 @@ class Limite extends React.Component {
 
         if (this.props.usuario !== null) {
             console.log('soy didmo');
-            const respuesta = await fetch('http://localhost:3500/clientes/' + this.props.usuario.correo, {
+            const respuesta = await fetch(this.props.url+'/clientes/' + this.props.usuario.correo, {
                 credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json; charset=UTF-8',
@@ -123,6 +123,7 @@ class Limite extends React.Component {
     }
 
     render() {
+        console.log(this.props.url);
         if (this.state.mostrarLimite) {
             const { usuario, limite, editarLimite, disableInput, arrayOpciones } = this.state;
             let mensaje = null;

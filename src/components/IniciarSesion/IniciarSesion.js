@@ -39,7 +39,7 @@ class IniciarSesion extends React.Component {
     iniciarSesion(e) {
 
         e.preventDefault();
-        fetch('http://localhost:3500/iniciarSesion', {//Solicitud de inicio de sesion
+        fetch(this.props.url+'/iniciarSesion', {//Solicitud de inicio de sesion
             method: 'POST',
             credentials: 'include',
             body: JSON.stringify({ correo: this.state.correo, contraseña: this.state.contraseña }),
@@ -84,7 +84,7 @@ class IniciarSesion extends React.Component {
         if (this.state.contraseña === this.state.contraseña_1) {
             if (this.state.contraseña_1 !== usuario.correo) {
                 console.log("Cambiando clave 2...");
-                fetch('http://localhost:3500/cliente/' + usuario.correo, {//Solicitud cambio de contrase
+                fetch(this.props.url+'/cliente/' + usuario.correo, {//Solicitud cambio de contrase
                     method: 'PUT',
                     credentials: 'include',
                     body: JSON.stringify({ sesionP: true, contraseña: this.state.contraseña }),

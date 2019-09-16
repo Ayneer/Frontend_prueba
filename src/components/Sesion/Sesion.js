@@ -9,7 +9,7 @@ let socket = null;//Conexion con socket servidor
 
 const crearSocket2 = function () {//borrar y probar
     console.log("Cree socket");
-    socket = socketIOClient('http://localhost:3500');
+    socket = socketIOClient('http://192.168.1.61:3500');
     socket.on('connect', function () { });
     return socket;
 }
@@ -62,7 +62,7 @@ class Sesion extends React.Component {
 
     async componentDidMount() {
         console.log('componentDidMount sesion');
-        const respuesta = await fetch('http://localhost:3500/estoyAutenticado', {
+        const respuesta = await fetch(this.props.url+'/estoyAutenticado', {
             credentials: 'include',
             headers: {
                 'Content-Type': 'application/json; charset=UTF-8',
@@ -95,9 +95,9 @@ class Sesion extends React.Component {
                 <div id="">
                     <Switch>
                         {this.state.sesionActiva ? 
-                            <Route path="/App" render={() => <App consumo={this.state.consumo} sesionActiva={this.sesionActiva} history={this.props.history} crearSocket2={crearSocket2} usuario={this.state.usuario} />} /> 
+                            <Route path="/App" render={() => <App consumo={this.state.consumo} sesionActiva={this.sesionActiva} history={this.props.history} crearSocket2={crearSocket2} usuario={this.state.usuario} url={this.props.url} />} /> 
                             : 
-                            <Route path="/" render={() => <IniciarSesion usuario={this.usuario} activarSocket={this.activarSocket} history={this.props.history} crearSocket2={crearSocket2} />} />
+                            <Route path="/" render={() => <IniciarSesion usuario={this.usuario} activarSocket={this.activarSocket} history={this.props.history} crearSocket2={crearSocket2} url={this.props.url} />} />
                         }
                     </Switch>
                 </div>

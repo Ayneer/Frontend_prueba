@@ -177,7 +177,7 @@ class Historial extends React.Component {
         this.setState({
             mostrarTabla: false
         });
-        fetch('http://localhost:3500/historial/' + usuario.correo, {//Solicitar historial
+        fetch(this.props.url+'/historial/' + usuario.correo, {//Solicitar historial
             credentials: 'include',
             headers: {
                 'Content-Type': 'application/json; charset=UTF-8',
@@ -253,7 +253,7 @@ class Historial extends React.Component {
         let objMes = [];
         let data = {}
 
-        fetch('http://localhost:3500/historial/' + correo, {//Solicitar historial
+        fetch(this.props.url+'/historial/' + correo, {//Solicitar historial
             credentials: 'include',
             headers: {
                 'Content-Type': 'application/json; charset=UTF-8',

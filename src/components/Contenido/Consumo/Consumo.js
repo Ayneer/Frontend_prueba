@@ -18,7 +18,7 @@ class Consumo extends React.Component {
     //Metodo para realizar consulta de consumo
     consultarConsumo(correo) {
         console.log(usuario.correo);
-        fetch('http://localhost:3500/consumo/' + correo, {//Solicitr consumo real
+        fetch(this.props.url+'/consumo/' + correo, {//Solicitr consumo real
             credentials: 'include',
             headers: {
                 'Content-Type': 'application/json; charset=UTF-8',
@@ -41,7 +41,7 @@ class Consumo extends React.Component {
         console.log("componentDidMount Consumo "+this.props.usuario.correo);
         if (this.props.usuario.correo) {
             if (this.props.consumo === 0) {
-                fetch('http://localhost:3500/consumo/' + this.props.usuario.correo, {//Solicitr consumo real
+                fetch(this.props.url+'/consumo/' + this.props.usuario.correo, {//Solicitr consumo real
                     credentials: 'include',
                     headers: {
                         'Content-Type': 'application/json; charset=UTF-8',
@@ -71,7 +71,6 @@ class Consumo extends React.Component {
     }
 
     render() {
-
         consumo = this.props.consumo;
         let mostrar = true;//Mostrar consumo de la consulta directa
         if (this.state.consumo === 0 || this.state.consumo <= consumo) {

@@ -28,6 +28,7 @@ class Pagina extends React.Component {
     }
 
     render() {
+        console.log(this.props.url);
         console.log("soy contenido render");
         if (this.state.activarContenidos) {
             console.log("contenido activado");
@@ -35,10 +36,14 @@ class Pagina extends React.Component {
             return (
                 <div id="contenido">
                     <Switch>
-                        <Route exact path="/App" render={() => <Consumo usuario={this.state.usuario} consumo={this.props.consumo} />} />
-                        <Route exact path="/App/consumo" render={() => <Consumo usuario={this.state.usuario} consumo={this.props.consumo}/>} />
-                        <Route exact path="/App/historial" render={() => <Historial usuario={this.state.usuario} />} />
-                        <Route exact path="/App/limite" render={() => <Limite usuario={this.state.usuario} />} />
+                        <Route exact path="/App" render={() => <Consumo usuario={this.state.usuario} consumo={this.props.consumo} url={this.props.url} />} />
+
+                        <Route exact path="/App/consumo" render={() => <Consumo usuario={this.state.usuario} consumo={this.props.consumo} url={this.props.url} />} />
+
+                        <Route exact path="/App/historial" render={() => <Historial usuario={this.state.usuario} url={this.props.url} />} />
+
+                        <Route exact path="/App/limite" render={() => <Limite usuario={this.state.usuario} url={this.props.url} />} />
+
                         <Route exact path="/App/generarReporte" component={Reporte} />
                         <Route exact path="/App/ajustes" component={Ajustes} />
 
